@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgWallO" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#cfd1cc" />
+      <stop offset="60%" stop-color="#bfbfb9" />
+      <stop offset="100%" stop-color="#a4a69f" />
+    </linearGradient>
+    <linearGradient id="pedTopO" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5f6f2" />
+      <stop offset="100%" stop-color="#e2e4df" />
+    </linearGradient>
+    <linearGradient id="ceramicGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3c3c36" />
+      <stop offset="30%" stop-color="#2c2c26" />
+      <stop offset="80%" stop-color="#1f1f1a" />
+      <stop offset="100%" stop-color="#181814" />
+    </linearGradient>
+    <filter id="shadowO" x="-30%" y="-30%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0.14  0 0 0 0 0.14  0 0 0 0 0.12  0 0 0 0.38 0" />
+    </filter>
+  </defs>
+
+  <!-- Wall Background -->
+  <rect width="600" height="800" fill="url(#bgWallO)" />
+
+  <!-- Cast Pedestal Shadow -->
+  <polygon points="180,600 460,730 410,800 160,650" fill="#24241f" filter="url(#shadowO)" />
+
+  <!-- Pedestal -->
+  <polygon points="150,510 410,510 410,750 150,750" fill="#ced0cb" />
+  <polygon points="150,510 200,460 460,460 410,510" fill="url(#pedTopO)" />
+  <polygon points="410,510 460,460 460,700 410,750" fill="#9ba098" />
+
+  <!-- Candle Cast Shadow -->
+  <ellipse cx="320" cy="485" rx="60" ry="18" fill="#24241f" opacity="0.45" />
+
+  <!-- Scented Candle Ceramic Vessel -->
+  <g transform="translate(240, 310)">
+    <!-- Vessel Cylindrical Body -->
+    <rect x="15" y="40" width="105" height="135" fill="url(#ceramicGrad)" stroke="#24241f" stroke-width="0.8" />
+    
+    <!-- Top Rim & Wax Surface -->
+    <ellipse cx="67.5" cy="40" rx="52.5" ry="14" fill="#2c2c26" stroke="#1f1f1a" stroke-width="0.5" />
+    <!-- Wax Pool Surface -->
+    <ellipse cx="67.5" cy="42" rx="46" ry="11" fill="#e2dcd0" />
+    <!-- Dark Wick -->
+    <line x1="67.5" y1="42" x2="67.5" y2="29" stroke="#24241f" stroke-width="2.5" stroke-linecap="round" />
+
+    <!-- Minimal White Paper Label with Soot Letter O -->
+    <rect x="35" y="75" width="65" height="52" fill="#e5e5e5" stroke="#24241f" stroke-width="0.5" />
+    <text x="67.5" y="110" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="28" fill="#24241f" text-anchor="middle">O</text>
+    <text x="67.5" y="121" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="5.5" fill="#24241f" text-anchor="middle" letter-spacing="0.8">OUD MINÉRALE</text>
+  </g>
+</svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgWallS" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d6d8d3" />
+      <stop offset="60%" stop-color="#c6c8c3" />
+      <stop offset="100%" stop-color="#afb1ac" />
+    </linearGradient>
+    <linearGradient id="pedTopS" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fafbf8" />
+      <stop offset="100%" stop-color="#eaede8" />
+    </linearGradient>
+    <filter id="shadowS" x="-30%" y="-30%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="16" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0.14  0 0 0 0 0.14  0 0 0 0 0.12  0 0 0 0.35 0" />
+    </filter>
+  </defs>
+
+  <!-- Wall Background -->
+  <rect width="600" height="800" fill="url(#bgWallS)" />
+
+  <!-- Cast Pedestal Shadow -->
+  <polygon points="200,590 470,720 420,800 170,640" fill="#24241f" filter="url(#shadowS)" />
+
+  <!-- Pedestal -->
+  <polygon points="160,500 420,500 420,740 160,740" fill="#d2d4cf" />
+  <polygon points="160,500 210,450 470,450 420,500" fill="url(#pedTopS)" />
+  <polygon points="420,500 470,450 470,690 420,740" fill="#9ea19a" />
+
+  <!-- Bottle Cast Shadow -->
+  <ellipse cx="325" cy="475" rx="42" ry="12" fill="#24241f" opacity="0.4" />
+  <polygon points="310,475 420,490 380,458 310,465" fill="#24241f" opacity="0.3" />
+
+  <!-- Room Spray Flacon -->
+  <g transform="translate(260, 240)">
+    <!-- Frosted Body -->
+    <rect x="15" y="70" width="75" height="165" fill="#f0f2ee" opacity="0.65" stroke="#24241f" stroke-width="0.8" />
+    <!-- Liquid Pale Mineral Glow -->
+    <rect x="19" y="95" width="67" height="135" fill="#cfd4cc" opacity="0.75" />
+
+    <!-- Label -->
+    <rect x="23" y="125" width="59" height="52" fill="#e5e5e5" stroke="#24241f" stroke-width="0.5" />
+    <text x="52" y="160" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="28" fill="#24241f" text-anchor="middle">S</text>
+    <text x="52" y="171" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="6" fill="#24241f" text-anchor="middle" letter-spacing="1">SILICE</text>
+
+    <!-- Highlights -->
+    <line x1="17" y1="71" x2="17" y2="233" stroke="#ffffff" stroke-width="1.8" opacity="0.85" />
+    <line x1="88" y1="71" x2="88" y2="233" stroke="#ffffff" stroke-width="0.6" opacity="0.4" />
+
+    <!-- Minimalist Spray Atomizer & Collar -->
+    <rect x="36" y="52" width="34" height="18" fill="#333333" stroke="#24241f" stroke-width="0.5" />
+    <rect x="42" y="32" width="22" height="20" fill="#24241f" />
+    <rect x="38" y="24" width="30" height="8" fill="#24241f" />
+    <!-- Fine Nozzle dot -->
+    <circle cx="63" cy="40" r="1.5" fill="#e5e5e5" />
+  </g>
+</svg>

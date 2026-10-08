@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgWallU" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#cbcec8" />
+      <stop offset="60%" stop-color="#bec0ba" />
+      <stop offset="100%" stop-color="#a7a9a3" />
+    </linearGradient>
+    <linearGradient id="pedTopU" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8f8f5" />
+      <stop offset="100%" stop-color="#eceee9" />
+    </linearGradient>
+    <linearGradient id="liquidU" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#805934" />
+      <stop offset="70%" stop-color="#54361b" />
+      <stop offset="100%" stop-color="#2a180b" />
+    </linearGradient>
+    <filter id="shadowU" x="-30%" y="-30%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="20" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0.14  0 0 0 0 0.14  0 0 0 0 0.12  0 0 0 0.4 0" />
+    </filter>
+  </defs>
+
+  <!-- Wall Background -->
+  <rect width="600" height="800" fill="url(#bgWallU)" />
+
+  <!-- Cast Pedestal Shadow -->
+  <polygon points="180,600 460,730 420,800 160,650" fill="#24241f" filter="url(#shadowU)" />
+
+  <!-- Pedestal -->
+  <polygon points="150,510 410,510 410,750 150,750" fill="#d0d2cd" />
+  <polygon points="150,510 200,460 460,460 410,510" fill="url(#pedTopU)" />
+  <polygon points="410,510 460,460 460,700 410,750" fill="#9da09a" />
+
+  <!-- Cast Bottle Shadow -->
+  <ellipse cx="320" cy="485" rx="55" ry="16" fill="#24241f" opacity="0.4" />
+  <polygon points="310,485 410,500 370,468 310,475" fill="#24241f" opacity="0.3" />
+
+  <!-- Bottle Square / Rectangular Flacon -->
+  <g transform="translate(245, 275)">
+    <!-- Glass Body -->
+    <rect x="10" y="45" width="95" height="155" fill="#e8eae6" opacity="0.3" stroke="#24241f" stroke-width="0.8" />
+    <!-- Liquid Content -->
+    <rect x="16" y="70" width="83" height="125" fill="url(#liquidU)" opacity="0.9" />
+
+    <!-- Label -->
+    <rect x="25" y="105" width="65" height="50" fill="#e5e5e5" stroke="#24241f" stroke-width="0.5" />
+    <text x="57" y="139" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="28" fill="#24241f" text-anchor="middle">U</text>
+    <text x="57" y="149" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="6" fill="#24241f" text-anchor="middle" letter-spacing="1">UMBRA</text>
+
+    <!-- Reflections -->
+    <line x1="14" y1="46" x2="14" y2="198" stroke="#ffffff" stroke-width="1.8" opacity="0.75" />
+    <line x1="102" y1="46" x2="102" y2="198" stroke="#ffffff" stroke-width="0.8" opacity="0.35" />
+
+    <!-- Cap -->
+    <rect x="36" y="12" width="44" height="34" fill="#24241f" stroke="#333333" stroke-width="0.5" />
+  </g>
+</svg>

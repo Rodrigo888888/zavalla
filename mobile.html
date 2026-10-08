@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZAVALA — Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;1,9..40,400&family=Inter:wght@400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+    rel="stylesheet">
+  <script>
+    (function () {
+      try {
+        var s = localStorage.getItem('zavala_theme');
+        if (s === 'dark' || (!s && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #F8E8EC;
+      color: #51454A;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 32px;
+      text-align: center;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    [data-theme="dark"] body {
+      background-color: #121013;
+      color: #E8DDE2;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+    }
+    p { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.7; margin-bottom: 8px; }
+    a.btn {
+      display: block;
+      width: 280px;
+      max-width: 90vw;
+      padding: 16px 24px;
+      border: 1px solid #51454A;
+      color: #51454A;
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: transparent;
+      transition: all 0.2s ease;
+    }
+    [data-theme="dark"] a.btn {
+      border-color: #734A56;
+      color: #E8DDE2;
+    }
+    a.btn:active, a.btn:hover { background: #51454A; color: #F8E8EC; }
+    [data-theme="dark"] a.btn:active, [data-theme="dark"] a.btn:hover { background: #8E5B6A; color: #FFFFFF; }
+    .theme-btn {
+      margin-top: 12px;
+      padding: 8px 16px;
+      border: 1px solid rgba(217, 167, 178, 0.5);
+      border-radius: 999px;
+      background: transparent;
+      color: inherit;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>ZAVALA</h1>
+  <p>ONDE A ELEGÂNCIA GANHA PERFUME</p>
+  <a class="btn" href="index.html">Perfumes</a>
+  <a class="btn" href="joias.html">Coleção de Joias</a>
+  <button class="theme-btn" id="mobileThemeBtn" onclick="toggleMobileTheme()">Alternar Modo Escuro</button>
+
+  <script>
+    function updateMobileThemeBtn() {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var btn = document.getElementById('mobileThemeBtn');
+      if (btn) btn.textContent = isDark ? 'Modo Claro' : 'Modo Escuro';
+    }
+    function toggleMobileTheme() {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var next = isDark ? 'light' : 'dark';
+      if (next === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+      try { localStorage.setItem('zavala_theme', next); } catch (e) {}
+      updateMobileThemeBtn();
+    }
+    updateMobileThemeBtn();
+  </script>
+</body>
+
+</html>

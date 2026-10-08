@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="100%" height="100%">
+  <defs>
+    <linearGradient id="galWall" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#cfd1cc" />
+      <stop offset="50%" stop-color="#bcbeb9" />
+      <stop offset="100%" stop-color="#9ea09a" />
+    </linearGradient>
+    <linearGradient id="galFloor" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#93958f" />
+      <stop offset="100%" stop-color="#73756f" />
+    </linearGradient>
+    <linearGradient id="sunbeam" x1="0%" y1="0%" x2="100%" y2="80%">
+      <stop offset="0%" stop-color="#f5f7f2" stop-opacity="0.6" />
+      <stop offset="60%" stop-color="#e5e8e2" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#24241f" stop-opacity="0.05" />
+    </linearGradient>
+    <filter id="galShadow" x="-20%" y="-20%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="24" />
+      <feColorMatrix type="matrix" values="0 0 0 0 0.14  0 0 0 0 0.14  0 0 0 0 0.12  0 0 0 0.45 0" />
+    </filter>
+  </defs>
+
+  <!-- Gallery Back Wall -->
+  <rect width="1000" height="520" fill="url(#galWall)" />
+
+  <!-- Concrete Cast Panel Seams -->
+  <line x1="0" y1="260" x2="1000" y2="260" stroke="#a9aba5" stroke-width="1.2" />
+  <line x1="500" y1="0" x2="500" y2="520" stroke="#a9aba5" stroke-width="1.2" />
+  
+  <!-- Formwork Tie-Holes (Architectural concrete detailing) -->
+  <circle cx="60" cy="80" r="3" fill="#8f918b" />
+  <circle cx="440" cy="80" r="3" fill="#8f918b" />
+  <circle cx="560" cy="80" r="3" fill="#8f918b" />
+  <circle cx="940" cy="80" r="3" fill="#8f918b" />
+  <circle cx="60" cy="440" r="3" fill="#8f918b" />
+  <circle cx="440" cy="440" r="3" fill="#8f918b" />
+  <circle cx="560" cy="440" r="3" fill="#8f918b" />
+  <circle cx="940" cy="440" r="3" fill="#8f918b" />
+
+  <!-- Floor -->
+  <rect y="520" width="1000" height="280" fill="url(#galFloor)" />
+  <line x1="0" y1="520" x2="1000" y2="520" stroke="#24241f" stroke-width="1" opacity="0.3" />
+
+  <!-- Raking Sunlight Beam from clerestory window -->
+  <polygon points="0,0 480,0 860,800 120,800" fill="url(#sunbeam)" />
+
+  <!-- Three Exhibition Plinths of varying heights in perspective -->
+  <!-- Plinth 1 (Left - Small) -->
+  <polygon points="180,480 270,480 270,620 180,620" fill="#c4c6c1" />
+  <polygon points="180,480 220,440 310,440 270,480" fill="#e8ebe6" />
+  <polygon points="270,480 310,440 310,580 270,620" fill="#9ea09a" />
+  <!-- Shadow 1 -->
+  <polygon points="180,620 340,700 370,660 270,620" fill="#24241f" opacity="0.35" filter="url(#galShadow)" />
+
+  <!-- Plinth 2 (Center - Monolith) -->
+  <!-- Floor Shadow 2 -->
+  <polygon points="460,670 780,770 820,720 580,670" fill="#24241f" opacity="0.45" filter="url(#galShadow)" />
+  <polygon points="450,430 580,430 580,670 450,670" fill="#d2d4cf" />
+  <polygon points="450,430 510,380 640,380 580,430" fill="#f4f6f1" />
+  <polygon points="580,430 640,380 640,620 580,670" fill="#8a8c86" />
+
+  <!-- Center Plinth Glass Object -->
+  <rect x="530" y="315" width="30" height="65" fill="#e8eae6" opacity="0.4" stroke="#24241f" stroke-width="0.5" />
+  <rect x="532" y="330" width="26" height="50" fill="#8a5a2c" opacity="0.85" />
+  <rect x="538" y="303" width="14" height="12" fill="#24241f" />
+
+  <!-- Plinth 3 (Right - Low wide bench) -->
+  <polygon points="760,510 910,510 910,590 760,590" fill="#c6c8c3" />
+  <polygon points="760,510 820,470 970,470 910,510" fill="#e5e8e3" />
+  <polygon points="910,510 970,470 970,550 910,590" fill="#959791" />
+
+  <!-- Overlay Gallery Caption Stamp in Soot -->
+  <text x="60" y="740" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="13" fill="#24241f" letter-spacing="1">ESTÚDIO ZAVALA — ESPAÇO MONÁSTICO</text>
+  <text x="60" y="760" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="11" fill="#24241f" letter-spacing="0.5" opacity="0.7">INSTALAÇÃO ARQUITETÔNICA EM LUZ NATURAL</text>
+</svg>
