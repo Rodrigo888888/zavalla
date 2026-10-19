@@ -1,33 +1,43 @@
 /**
  * GET /api/admin/overview — visão geral do painel (somente administrador).
- * Indicadores + produtos + últimas movimentações, tudo do MESMO banco da loja.
+ * Indicadores reais calculados no servidor: produtos, unidades, valor
+ * estimado, alertas, gráfico de entradas/saídas e produtos mais vendidos.
  */
 const auth = require('../auth');
-const store = require('../store');
-const inv = require('../inventory');
+const repo = require('../repo');
+const stock = require('../stock');
+const migrate = require('../migrate');
 const { send, sendError, requireMethod } = require('../http');
 
 module.exports = async (req, res) => {
   try {
-    // Autentica primeiro: sem sessão a resposta é sempre 401, independentemente
-    // do método pedido.
     const admin = await auth.requireAdmin(req);
     requireMethod(req, 'GET');
 
-    const [products, movements, orders] = await Promise.all([
-      store.listProducts(),
-      store.listMovements(30),
-      store.listOrders(150),
+    await migrate.ensureMigrated();
+
+    const [kpis, alerts, series, top, movements, orders, settings] = await Promise.all([
+      stock.computeKpis(),
+      stock.computeAlerts(),
+      stock.movementSeries(14),
+      stock.topSellers(5),
+      repo.listMovements({ limit: 12 }),
+      repo.listOrders({ limit: 40 }),
+      repo.getSettings(),
     ]);
 
     send(res, 200, {
       ok: true,
       user: admin.user,
-      kpis: inv.computeKpis(products),
-      products: products.map(inv.adminProduct),
+      kpis,
+      alerts: alerts.slice(0, 8),
+      alertCount: alerts.length,
+      series,
+      topSellers: top,
       movements,
-      orders: orders.slice(0, 40),
+      orders: orders.filter((o) => o.status === 'pendente').slice(0, 10),
       pendingOrders: orders.filter((o) => o.status === 'pendente').length,
+      settings,
       serverTime: new Date().toISOString(),
     });
   } catch (err) {

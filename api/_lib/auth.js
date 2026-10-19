@@ -11,7 +11,7 @@
  * - Há limite de tentativas de login por IP, com bloqueio temporário.
  */
 const crypto = require('crypto');
-const store = require('./store');
+const store = require('./repo'); // repositório v2 (sessões no mesmo formato)
 const { HttpError, getCookie, clientIp } = require('./http');
 
 const COOKIE_NAME = 'zavala_sess';

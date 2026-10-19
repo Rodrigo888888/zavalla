@@ -1,49 +1,51 @@
 /**
- * POST /api/admin/stock — adiciona, remove ou define a quantidade de um produto.
- * body: { key, mode: 'add' | 'sub' | 'set', qty, note }
- * Toda alteração vira uma linha no histórico com o usuário responsável.
+ * POST /api/admin/stock — registra uma movimentação manual de estoque.
+ * Tipos aceitos: entrada, saida, perda, ajuste.
+ * Tudo vira movimentação imutável com antes/depois, autor e motivo.
  */
 const auth = require('../auth');
-const inv = require('../inventory');
-const store = require('../store');
-const { HttpError, send, sendError, readBody, requireMethod, cleanText, asInt } = require('../http');
+const repo = require('../repo');
+const stock = require('../stock');
+const { send, sendError, requireMethod, readBody, cleanText } = require('../http');
+const { ValidationError } = require('../model');
+
+const ALLOWED = ['entrada', 'saida', 'perda', 'ajuste'];
 
 module.exports = async (req, res) => {
   try {
-    // Autentica primeiro: sem sessão a resposta é sempre 401, independentemente
-    // do método pedido.
     const admin = await auth.requireAdmin(req);
     requireMethod(req, 'POST');
     const body = await readBody(req);
 
-    const key = cleanText(body.key, 64);
-    const mode = cleanText(body.mode, 10);
-    const qty = asInt(body.qty, { min: 0, max: 99999, fallback: null });
-    const note = cleanText(body.note, 120);
+    const productId = cleanText(body.productId, 64);
+    const type = cleanText(body.type, 20);
+    if (!productId) throw new ValidationError({ productId: 'Produto não informado.' });
+    if (!ALLOWED.includes(type)) throw new ValidationError({ type: 'Tipo de movimentação inválido.' });
 
-    if (!key) throw new HttpError(400, 'Produto não informado.', 'VALIDACAO');
-    if (qty == null) throw new HttpError(400, 'Quantidade inválida.', 'VALIDACAO');
-    if (!['add', 'sub', 'set'].includes(mode)) throw new HttpError(400, 'Operação inválida.', 'VALIDACAO');
-
-    const current = await store.getProduct(key);
-    if (!current) throw new HttpError(404, 'Produto não encontrado.', 'PRODUTO');
-
-    if (mode === 'sub' && qty > inv.stockOf(current)) {
-      throw new HttpError(400, `Não é possível remover ${qty}: há apenas ${inv.stockOf(current)} unidade(s) de ${current.name}.`, 'VALIDACAO');
+    const reason = cleanText(body.reason, 240) || null;
+    if (type === 'perda' && !reason) {
+      throw new ValidationError({ reason: 'Descreva o motivo da perda (obrigatório para auditoria).' });
     }
 
-    const updated =
-      mode === 'set'
-        ? await inv.changeStock({ key, setTo: qty, type: 'ajuste', user: admin.user, reason: note || 'ajuste manual' })
-        : await inv.changeStock({
-            key,
-            delta: mode === 'add' ? qty : -qty,
-            type: mode === 'add' ? 'entrada' : 'saida',
-            user: admin.user,
-            reason: note || (mode === 'add' ? 'entrada manual' : 'saída manual'),
-          });
+    const isSet = type === 'ajuste' && body.mode === 'set';
+    const qty = Math.trunc(Number(body.qty));
+    if (!Number.isFinite(qty)) throw new ValidationError({ qty: 'Quantidade inválida.' });
+    if (!isSet && qty === 0) throw new ValidationError({ qty: 'Quantidade deve ser diferente de zero.' });
+    if (isSet && qty < 0) throw new ValidationError({ qty: 'O saldo ajustado não pode ser negativo.' });
 
-    send(res, 200, { ok: true, product: inv.adminProduct(updated) });
+    const { product, movement, duplicate } = await stock.applyMovement(productId, {
+      type, qty, mode: isSet ? 'set' : 'delta',
+      user: admin.user, reason, origin: 'painel',
+      opToken: cleanText(body.opToken, 64) || null, // anti-duplicidade (reenvio por rede)
+    });
+
+    send(res, duplicate ? 200 : 201, {
+      ok: true,
+      duplicate: !!duplicate,
+      product,
+      movement,
+      message: duplicate ? 'Operação já registrada anteriormente — nada foi alterado de novo.' : 'Movimentação registrada.',
+    });
   } catch (err) {
     sendError(res, err);
   }

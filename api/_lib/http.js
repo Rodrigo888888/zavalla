@@ -38,7 +38,22 @@ function isBancoFora(err) {
 }
 
 function sendError(res, err) {
-  const status = err instanceof HttpError ? err.status : err.name === 'StoreConflictError' ? 409 : err.name === 'NotFoundError' ? 404 : 500;
+  // Erros de validação do modelo: 400 com o mapa de campos para o formulário
+  // destacar exatamente o que precisa ser corrigido.
+  if (err && err.name === 'ValidationError') {
+    send(res, 400, { ok: false, error: 'Confira os campos destacados.', code: 'VALIDACAO', fields: err.fields || {} });
+    return;
+  }
+
+  // Regras de estoque (saldo insuficiente, produto inativo, pedido inválido…):
+  // 409 quando é disputa de estado, 400 para requisição inválida.
+  if (err && err.name === 'StockError') {
+    const status = /SEM_ESTOQUE|JA_CONFIRMADO|CONFLITO|INATIVO/.test(err.code || '') ? 409 : 400;
+    send(res, status, { ok: false, error: err.message, code: err.code || 'ESTOQUE' });
+    return;
+  }
+
+  const status = err instanceof HttpError ? err.status : err.name === 'StoreConflictError' ? 409 : err.name === 'NotFoundStoreError' ? 404 : 500;
 
   // Banco de dados indisponível: responde 503 com mensagem objetiva, sem
   // misturar com "senha incorreta" (401) nem com erro interno genérico (500).

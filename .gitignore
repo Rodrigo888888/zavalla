@@ -7,3 +7,12 @@ __*.png
 _*.log
 backup-*.zip
 *.zip
+
+.env*
+
+# banco local de testes (mock em disco) e artefatos de execução
+test/.blob/
+test/out.txt
+test/err.txt
+test/resultado.txt
+test/server.pid

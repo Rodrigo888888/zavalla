@@ -1,28 +1,28 @@
 /**
- * GET /api/admin/movements?limit=&product=&type= — histórico de movimentações.
- * Cada linha registra data, produto, quantidade alterada, tipo e responsável.
+ * GET /api/admin/movements — histórico de movimentações (somente administrador).
+ * Filtros: from, to, product, type, limit. O histórico é imutável.
  */
 const auth = require('../auth');
-const store = require('../store');
-const { send, sendError, requireMethod, asInt, cleanText } = require('../http');
+const repo = require('../repo');
+const migrate = require('../migrate');
+const { send, sendError, requireMethod } = require('../http');
 
 module.exports = async (req, res) => {
   try {
-    // Autentica primeiro: sem sessão a resposta é sempre 401, independentemente
-    // do método pedido.
     await auth.requireAdmin(req);
     requireMethod(req, 'GET');
+    await migrate.ensureMigrated();
 
-    const url = new URL(req.url, 'http://localhost');
-    const limit = asInt(url.searchParams.get('limit'), { min: 1, max: 500, fallback: 200 });
-    const productKey = cleanText(url.searchParams.get('product'), 64);
-    const type = cleanText(url.searchParams.get('type'), 24);
-
-    const movements = await store.listMovements(limit, {
-      productKey: productKey || undefined,
-      type: type || undefined,
+    const q = req.query || {};
+    const movements = await repo.listMovements({
+      from: q.from || null,
+      to: q.to || null,
+      productId: q.product || null,
+      type: q.type || null,
+      limit: Math.min(1000, Number(q.limit) || 200),
     });
-    send(res, 200, { ok: true, movements });
+
+    send(res, 200, { ok: true, movements, total: movements.length });
   } catch (err) {
     sendError(res, err);
   }

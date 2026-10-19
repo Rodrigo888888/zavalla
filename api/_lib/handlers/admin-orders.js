@@ -1,56 +1,54 @@
 /**
- * GET  /api/admin/orders — lista de pedidos (pendentes, confirmados, cancelados).
- * POST /api/admin/orders — { id, action: 'confirmar' | 'cancelar' }.
- *   confirmar → pedido fechado (as unidades já saíram no momento da criação).
- *   cancelar  → devolve as unidades para o estoque.
+ * /api/admin/orders — pedidos (painel).
+ *   GET  — lista pedidos (filtro ?status=)
+ *   POST — ações: confirmar | cancelar | devolver
  */
 const auth = require('../auth');
-const store = require('../store');
-const inv = require('../inventory');
-const { HttpError, send, sendError, readBody, requireMethod, cleanText } = require('../http');
+const repo = require('../repo');
+const stock = require('../stock');
+const migrate = require('../migrate');
+const { send, sendError, requireMethod, readBody, cleanText, HttpError } = require('../http');
+const { ValidationError } = require('../model');
 
 module.exports = async (req, res) => {
   try {
     const admin = await auth.requireAdmin(req);
 
     if (req.method === 'GET') {
-      const orders = await store.listOrders(150);
-      return send(res, 200, {
-        ok: true,
-        orders,
-        pending: orders.filter((o) => o.status === 'pendente').length,
-      });
+      await migrate.ensureMigrated();
+      const q = req.query || {};
+      let orders = await repo.listOrders({ limit: 300 });
+      if (q.status) orders = orders.filter((o) => o.status === q.status);
+      return send(res, 200, { ok: true, orders, total: orders.length });
     }
 
-    if (req.method === 'POST') {
-      requireMethod(req, 'POST');
-      const body = await readBody(req);
-      const id = cleanText(body.id, 40);
-      const action = cleanText(body.action, 20);
-      if (!id) throw new HttpError(400, 'Pedido não informado.', 'VALIDACAO');
+    requireMethod(req, 'POST');
+    const body = await readBody(req);
+    const action = cleanText(body.action, 30);
+    const orderId = cleanText(body.orderId, 40);
+    if (!orderId) throw new ValidationError({ orderId: 'Pedido não informado.' });
 
-      const order = await store.getOrder(id);
-      if (!order) throw new HttpError(404, 'Pedido não encontrado.', 'PEDIDO');
-
-      const updated =
-        action === 'confirmar'
-          ? await inv.confirmOrder(order, { user: admin.user })
-          : action === 'cancelar'
-          ? await inv.cancelOrder(order, { user: admin.user, reason: 'cancelado pelo administrador' })
-          : null;
-
-      if (!updated) throw new HttpError(400, 'Ação inválida. Use "confirmar" ou "cancelar".', 'VALIDACAO');
-
-      const products = await store.listProducts();
-      return send(res, 200, {
-        ok: true,
-        order: updated,
-        kpis: inv.computeKpis(products),
-        message: action === 'confirmar' ? 'Pedido confirmado.' : 'Pedido cancelado e estoque devolvido.',
-      });
+    if (action === 'confirmar') {
+      const { order } = await stock.confirmOrder(orderId, { by: admin.user });
+      return send(res, 200, { ok: true, order, message: 'Pedido confirmado.' });
     }
 
-    throw new HttpError(405, 'Método não permitido.', 'METODO');
+    if (action === 'cancelar') {
+      const reason = cleanText(body.reason, 240) || `Cancelado pelo painel (${admin.user})`;
+      const { order } = await stock.cancelOrder(orderId, { by: admin.user, reason });
+      return send(res, 200, { ok: true, order, message: 'Pedido cancelado — as unidades voltaram ao estoque.' });
+    }
+
+    if (action === 'devolver') {
+      const { movement, product } = await stock.returnOrderItem(orderId, Number(body.itemIndex) || 0, {
+        by: admin.user,
+        qty: body.qty != null ? Number(body.qty) : null,
+        reason: cleanText(body.reason, 240) || null,
+      });
+      return send(res, 200, { ok: true, movement, product, message: 'Devolução registrada — unidades de volta ao estoque.' });
+    }
+
+    throw new HttpError(400, 'Ação desconhecida.', 'ACAO');
   } catch (err) {
     sendError(res, err);
   }

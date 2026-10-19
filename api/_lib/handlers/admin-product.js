@@ -1,70 +1,86 @@
 /**
- * PUT    /api/admin/products/:key — edita um produto (mesmos campos da loja).
- * DELETE /api/admin/products/:key — desativa o produto (some da vitrine,
- *         mas mantém o histórico de movimentações intacto).
+ * /api/admin/products/<id> — edição de um produto (somente administrador).
+ *   GET   — produto completo
+ *   PUT   — atualiza cadastro (SKU trocado é revalidado; saldo NÃO muda por aqui)
+ *   DELETE — arquiva (inativar), preservando histórico e saldo
  */
 const auth = require('../auth');
-const store = require('../store');
-const inv = require('../inventory');
-const { HttpError, send, sendError, readBody, requireMethod, cleanText } = require('../http');
-const { sanitizeProductInput } = require('../product-input');
-
-const nowISO = () => new Date().toISOString();
+const repo = require('../repo');
+const stock = require('../stock');
+const { validateProduct, ValidationError } = require('../model');
+const { send, sendError, requireMethod, readBody, HttpError } = require('../http');
 
 module.exports = async (req, res) => {
   try {
     const admin = await auth.requireAdmin(req);
-    const key = cleanText(req.query && req.query.id, 64);
-    if (!key) throw new HttpError(400, 'Produto não informado.', 'VALIDACAO');
+    const id = (req.query && req.query.id) || '';
+    if (!id) throw new HttpError(400, 'Produto não informado.', 'VALIDACAO');
 
-    const existing = await store.getProduct(key);
-    if (!existing) throw new HttpError(404, 'Produto não encontrado.', 'PRODUTO');
+    const existing = await repo.getProduct(id);
+    if (!existing) throw new HttpError(404, 'Produto não encontrado.', 'NAO_ENCONTRADO');
+
+    if (req.method === 'GET') {
+      return send(res, 200, { ok: true, product: existing });
+    }
 
     if (req.method === 'PUT') {
+      requireMethod(req, 'PUT');
       const body = await readBody(req);
-      const fields = sanitizeProductInput(body, { partial: true, existing });
 
-      const next = Object.assign({}, existing, fields, { updatedAt: nowISO() });
-      const before = inv.stockOf(existing);
-      const after = inv.stockOf(next);
+      // Mantém campos não enviados (formulário parcial)
+      const merged = { ...existing, ...body, initialStock: undefined };
+      const draft = validateProduct(merged, { existingId: id });
 
-      if (after !== before) {
-        // Mudança de quantidade pela edição: registra como ajuste para o
-        // histórico nunca ficar sem explicação.
-        await store.saveProduct(next);
-        await inv.recordMovement({
-          productKey: key,
-          productName: next.name,
-          category: next.category,
-          delta: after - before,
-          before,
-          after,
-          type: 'ajuste',
-          user: admin.user,
-          reason: 'ajuste pela edição do produto',
-        });
-      } else {
-        await store.saveProduct(next);
+      // SKU novo precisa ser único
+      if (draft.sku !== existing.sku && (await repo.isSkuTaken(draft.sku, id))) {
+        throw new ValidationError({ sku: `Já existe um produto com o SKU "${draft.sku}".` });
+      }
+      if (draft.sku !== existing.sku) {
+        // troca o dono do SKU no índice (CAS)
+        const idx = await repo.readIndex();
+        delete idx.skus[existing.sku];
+        await repo.writeIndex(idx);
+        const claimed = await repo.claimSku(draft.sku, id);
+        if (!claimed) throw new ValidationError({ sku: `Já existe um produto com o SKU "${draft.sku}".` });
       }
 
-      return send(res, 200, { ok: true, product: inv.adminProduct(next) });
+      const product = {
+        ...existing,
+        ...draft,
+        stock: existing.stock,          // saldo só muda por movimentação
+        stockControl: existing.stockControl,
+        createdAt: existing.createdAt,
+        createdBy: existing.createdBy,
+        updatedAt: new Date().toISOString(),
+        updatedBy: admin.user,
+      };
+      await repo.saveProduct(product);
+      if (product.storeKey) await repo.setStoreKey(product.storeKey, product.id);
+
+      // Quantidade enviada pelo formulário de edição: vira movimentação
+      // registrada (auditoria completa), nunca uma alteração silenciosa.
+      let movement = null;
+      const sentQty = body.quantity != null && body.quantity !== '' ? Math.max(0, Math.trunc(Number(body.quantity))) : null;
+      if (sentQty != null && Number.isFinite(sentQty) && sentQty !== existing.stock) {
+        const applied = await stock.applyMovement(id, {
+          type: 'ajuste', mode: 'set', qty: sentQty, user: admin.user,
+          reason: 'Ajuste pela edição do cadastro', origin: 'painel',
+        });
+        movement = applied.movement;
+      }
+
+      return send(res, 200, { ok: true, product: await repo.getProduct(id), movement });
     }
 
     if (req.method === 'DELETE') {
-      const next = Object.assign({}, existing, { active: false, updatedAt: nowISO() });
-      await store.saveProduct(next);
-      await inv.recordMovement({
-        productKey: key,
-        productName: next.name,
-        category: next.category,
-        delta: 0,
-        before: inv.stockOf(existing),
-        after: inv.stockOf(existing),
-        type: 'desativacao',
-        user: admin.user,
-        reason: 'produto retirado da vitrine',
+      requireMethod(req, 'DELETE');
+      // Arquivamento: inativa preservando saldo e histórico.
+      const product = await repo.mutateProduct(id, (doc) => {
+        if (!doc) return repo.SKIP;
+        return { ...doc, status: 'inativo', updatedAt: new Date().toISOString(), updatedBy: admin.user };
       });
-      return send(res, 200, { ok: true, product: inv.adminProduct(next) });
+      const fresh = await repo.getProduct(id);
+      return send(res, 200, { ok: true, product: fresh || existing, archived: true });
     }
 
     throw new HttpError(405, 'Método não permitido.', 'METODO');

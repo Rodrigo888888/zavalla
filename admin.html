@@ -8,18 +8,20 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23FBF2F5' stroke='%23B88A72'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='17' fill='%23B88A72'%3EZ%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap">
-  <link rel="stylesheet" href="admin.css?v=7">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&display=swap">
+  <link rel="stylesheet" href="admin.css?v=novo1">
 </head>
 <body>
 
   <!-- ============================ LOGIN ============================ -->
-  <section class="login-screen" id="loginScreen" aria-label="Acesso administrativo">
+  <section class="login-screen" id="loginScreen" aria-label="Acesso restrito">
     <div class="login-card">
+      <div class="login-mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="44" height="44"><circle cx="24" cy="24" r="22" fill="#FBF2F5" stroke="#C9A961" stroke-width="1.2"/><text x="24" y="31" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#B88A72">Z</text></svg>
+      </div>
       <span class="login-brand">ZAVALLA</span>
-      <span class="login-slogan">ONDE A ELEGÂNCIA GANHA PERFUME</span>
-      <h1 class="login-title">Controle de Estoque</h1>
-      <p class="login-sub">Área restrita ao ateliê. Cada alteração fica registrada no histórico.</p>
+      <span class="login-slogan">Controle de Estoque</span>
+      <p class="login-sub">Área restrita ao ateliê. Cada operação fica registrada no histórico.</p>
 
       <form id="loginForm" autocomplete="on" novalidate>
         <label class="field">
@@ -31,7 +33,7 @@
           <input type="password" id="loginPassword" name="current-password" autocomplete="current-password" required>
         </label>
         <p class="login-error" id="loginError" role="alert" hidden></p>
-        <button type="submit" class="btn btn-solid" id="loginBtn">Entrar</button>
+        <button type="submit" class="btn btn-solid btn-block" id="loginBtn">Entrar no painel</button>
       </form>
 
       <a class="login-back" href="index.html">← Voltar para a loja</a>
@@ -39,236 +41,474 @@
   </section>
 
   <!-- ============================ PAINEL ============================ -->
-  <div class="app layout" id="app" hidden>
+  <div class="app" id="app" hidden>
 
-    <!-- Menu lateral -->
-    <aside class="side">
-      <div class="side-brand">
-        <span class="brand-name">ZAVALLA</span>
-        <span class="brand-section">Controle de Estoque</span>
-      </div>
-      <nav class="side-nav" aria-label="Seções do painel">
-        <button class="tab is-active" data-tab="products" role="tab" type="button">Produtos</button>
-        <button class="tab" data-tab="orders" role="tab" type="button">Pedidos <span class="tab-badge" id="pendingBadge" hidden>0</span></button>
-        <button class="tab" data-tab="movements" role="tab" type="button">Movimentações</button>
-      </nav>
-      <div class="side-foot">
-        <span class="side-user" id="topbarUser"></span>
-        <button class="side-link" id="refreshBtn" type="button">Atualizar dados</button>
-        <button class="side-link" id="logoutBtn" type="button">Sair do painel</button>
-      </div>
-    </aside>
+    <!-- Barra superior (mobile) -->
+    <header class="topbar">
+      <button class="topbar-menu" id="menuBtn" type="button" aria-label="Abrir menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <span class="topbar-brand">ZAVALLA</span>
+      <span class="topbar-section" id="topbarSection">Visão geral</span>
+    </header>
 
-    <!-- Conteúdo -->
-    <main class="main">
-      <header class="page-head">
-        <h1 class="page-title" id="pageTitle">Produtos</h1>
-        <p class="page-sub" id="pageSub">Preço, foto e quantidade de cada produto — a loja atualiza na hora.</p>
-      </header>
-
-      <!-- Indicadores -->
-      <section class="kpis" id="kpis" aria-label="Indicadores">
-        <article class="kpi">
-          <span class="kpi-value" id="kpiProducts">—</span>
-          <span class="kpi-label">Produtos na loja</span>
-          <span class="kpi-sub">ativos na vitrine</span>
-        </article>
-        <article class="kpi">
-          <span class="kpi-value" id="kpiUnits">—</span>
-          <span class="kpi-label">Unidades em estoque</span>
-          <span class="kpi-sub">somando todos os produtos</span>
-        </article>
-        <article class="kpi kpi-warn">
-          <span class="kpi-value" id="kpiLow">—</span>
-          <span class="kpi-label">Estoque baixo</span>
-          <span class="kpi-sub">já vale repor</span>
-        </article>
-        <article class="kpi kpi-out">
-          <span class="kpi-value" id="kpiOut">—</span>
-          <span class="kpi-label">Esgotados</span>
-          <span class="kpi-sub">sem unidades para vender</span>
-        </article>
-      </section>
-
-      <!-- ---------------- Produtos ---------------- -->
-      <section class="panel is-active" id="panel-products">
-        <div class="toolbar">
-          <input type="search" class="input-search" id="searchInput" placeholder="Buscar produto pelo nome…" aria-label="Buscar produto">
-          <select class="input-select" id="categoryFilter" aria-label="Filtrar por categoria">
-            <option value="all">Todas as categorias</option>
-            <option value="perfumes">Perfumes</option>
-            <option value="joias">Joias</option>
-          </select>
-          <button class="btn btn-outline" id="seedBtn" type="button" title="Importa para o banco os produtos que a loja já vende">Importar produtos da loja</button>
-          <button class="btn btn-solid" id="newProductBtn" type="button">+ Novo produto</button>
+    <div class="layout">
+      <!-- Barra lateral -->
+      <aside class="side" id="side">
+        <div class="side-brand">
+          <span class="side-name">ZAVALLA</span>
+          <span class="side-sub">Controle de Estoque</span>
         </div>
-
-        <p class="hint" id="productsHint">Carregando…</p>
-
-        <div class="cards cards-products" id="productsCards"></div>
-        <p class="empty" id="productsEmpty" hidden>Nenhum produto encontrado.</p>
-
-        <div class="table-wrap" id="productsTableWrap" hidden>
-          <table class="data-table" id="productsTable">
-            <thead>
-              <tr>
-                <th>Produto</th>
-                <th>Categoria</th>
-                <th class="num">Preço</th>
-                <th class="num">Estoque</th>
-                <th>Ações rápidas</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="productsBody"></tbody>
-          </table>
+        <nav class="side-nav" aria-label="Seções do painel">
+          <button class="nav-item is-active" data-view="overview" type="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+            Visão geral
+          </button>
+          <button class="nav-item" data-view="products" type="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3.3 7.5L12 12l8.7-4.5M12 12v9"/></svg>
+            Produtos
+          </button>
+          <button class="nav-item" data-view="stock" type="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16v13H4z"/><path d="M4 7l2-3h12l2 3M9 11h6"/></svg>
+            Estoque
+          </button>
+          <button class="nav-item" data-view="movements" type="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 10l4-4 4 4M7 14l4 4 4-4"/></svg>
+            Movimentações
+          </button>
+          <button class="nav-item" data-view="categories" type="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+            Categorias
+          </button>
+          <button class="nav-item" data-view="suppliers" type="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 17V9h11v8M14 11h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg>
+            Fornecedores
+          </button>
+          <button class="nav-item" data-view="alerts" type="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17.5v.5"/></svg>
+            Alertas
+            <span class="nav-badge" id="alertsBadge" hidden>0</span>
+          </button>
+          <button class="nav-item" data-view="reports" type="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>
+            Relatórios
+          </button>
+          <button class="nav-item" data-view="settings" type="button">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2.8l1.2 2.5 2.7-.5 1 2.6 2.5 1.2-1 2.6 1 2.6-2.5 1.2-1 2.6-2.7-.5L12 21.2l-1.2-2.5-2.7.5-1-2.6L4.6 15.4l1-2.6-1-2.6 2.5-1.2 1-2.6 2.7.5L12 2.8z"/></svg>
+            Configurações
+          </button>
+        </nav>
+        <div class="side-foot">
+          <span class="side-user" id="topbarUser"></span>
+          <button class="nav-link" id="refreshBtn" type="button">Atualizar dados</button>
+          <button class="nav-link nav-link-out" id="logoutBtn" type="button">Sair do painel</button>
         </div>
-      </section>
+      </aside>
+      <div class="side-overlay" id="sideOverlay" hidden></div>
 
-      <!-- ---------------- Pedidos ---------------- -->
-      <section class="panel" id="panel-orders">
-        <p class="hint">Pedidos criados na loja. A baixa de estoque já aconteceu na criação; cancelar devolve as unidades.</p>
-        <div class="table-wrap">
-          <table class="data-table" id="ordersTable">
-            <thead>
-              <tr>
-                <th>Pedido</th>
-                <th>Cliente</th>
-                <th>Itens</th>
-                <th class="num">Total</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="ordersBody"></tbody>
-          </table>
-        </div>
-        <div class="cards" id="ordersCards"></div>
-        <p class="empty" id="ordersEmpty" hidden>Nenhum pedido registrado até o momento.</p>
-      </section>
+      <!-- Conteúdo -->
+      <main class="main" id="main">
 
-      <!-- ---------------- Movimentações ---------------- -->
-      <section class="panel" id="panel-movements">
-        <div class="toolbar">
-          <select class="input-select" id="movementTypeFilter" aria-label="Filtrar por tipo">
-            <option value="all">Todos os tipos</option>
-            <option value="entrada">Entradas</option>
-            <option value="saida">Saídas</option>
-            <option value="ajuste">Ajustes</option>
-            <option value="devolucao">Devoluções</option>
-            <option value="cadastro">Cadastros</option>
-            <option value="desativacao">Desativações</option>
-          </select>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" id="movementsTable">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Produto</th>
-                <th class="num">Qtd.</th>
-                <th class="num">Saldo</th>
-                <th>Tipo</th>
-                <th>Responsável</th>
-              </tr>
-            </thead>
-            <tbody id="movementsBody"></tbody>
-          </table>
-        </div>
-        <div class="cards" id="movementsCards"></div>
-        <p class="empty" id="movementsEmpty" hidden>Nenhuma movimentação registrada.</p>
-      </section>
+        <!-- VISÃO GERAL -->
+        <section class="view is-active" id="view-overview" data-title="Visão geral">
+          <div class="view-head">
+            <div>
+              <h1 class="view-title">Visão geral</h1>
+              <p class="view-sub" id="overviewSub">Indicadores atualizados a partir do banco de dados.</p>
+            </div>
+            <div class="view-actions">
+              <button class="btn btn-outline" type="button" data-goto="stock">Registrar movimentação</button>
+              <button class="btn btn-solid" type="button" id="overviewNewProduct">Cadastrar produto</button>
+            </div>
+          </div>
 
-      <footer class="foot">ZAVALLA · Painel privado de estoque · Dados gravados no servidor</footer>
-    </main>
+          <div class="kpis" id="kpis">
+            <article class="kpi"><span class="kpi-value" id="kpiProducts">—</span><span class="kpi-label">Produtos ativos</span><span class="kpi-sub" id="kpiProductsSub">&nbsp;</span></article>
+            <article class="kpi"><span class="kpi-value" id="kpiUnits">—</span><span class="kpi-label">Unidades em estoque</span><span class="kpi-sub" id="kpiUnitsSub">&nbsp;</span></article>
+            <article class="kpi kpi-warn"><span class="kpi-value" id="kpiLow">—</span><span class="kpi-label">Estoque baixo</span><span class="kpi-sub">abaixo do mínimo</span></article>
+            <article class="kpi kpi-danger"><span class="kpi-value" id="kpiOut">—</span><span class="kpi-label">Sem estoque</span><span class="kpi-sub">esgotados</span></article>
+            <article class="kpi"><span class="kpi-value" id="kpiCost">—</span><span class="kpi-label">Valor em estoque</span><span class="kpi-sub">pelo custo de aquisição</span></article>
+            <article class="kpi"><span class="kpi-value" id="kpiOrders">—</span><span class="kpi-label">Pedidos pendentes</span><span class="kpi-sub">aguardando confirmação</span></article>
+          </div>
+
+          <div class="grid-2">
+            <article class="card">
+              <header class="card-head"><h2>Entradas e saídas</h2><span class="card-sub">últimos 14 dias</span></header>
+              <div class="chart" id="chart" aria-label="Gráfico de entradas e saídas por dia"></div>
+            </article>
+            <article class="card">
+              <header class="card-head"><h2>Mais vendidos</h2><span class="card-sub">por unidade saída</span></header>
+              <div id="topSellers" class="rank"></div>
+            </article>
+          </div>
+
+          <div class="grid-2">
+            <article class="card">
+              <header class="card-head"><h2>Últimas movimentações</h2><button class="link" type="button" data-goto="movements">ver todas</button></header>
+              <div id="overviewMovements" class="mini-list"></div>
+            </article>
+            <article class="card">
+              <header class="card-head"><h2>Alertas recentes</h2><button class="link" type="button" data-goto="alerts">ver todos</button></header>
+              <div id="overviewAlerts" class="mini-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- PRODUTOS -->
+        <section class="view" id="view-products" data-title="Produtos" hidden>
+          <div class="view-head">
+            <div>
+              <h1 class="view-title">Produtos</h1>
+              <p class="view-sub">Cadastro completo: custo, preço, fornecedor, localização e saldo.</p>
+            </div>
+            <div class="view-actions">
+              <button class="btn btn-solid" type="button" id="newProductBtn">+ Novo produto</button>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <input class="input search" type="search" id="productSearch" placeholder="Buscar por nome, SKU ou marca…" aria-label="Buscar produtos">
+            <select class="input select" id="productCategory" aria-label="Filtrar por categoria">
+              <option value="">Todas as categorias</option>
+            </select>
+            <select class="input select" id="productStatus" aria-label="Filtrar por status">
+              <option value="">Todos os status</option>
+              <option value="ativo">Ativos</option>
+              <option value="inativo">Inativos (arquivados)</option>
+            </select>
+          </div>
+
+          <article class="card table-card">
+            <div class="table-wrap">
+              <table class="table" id="productsTable">
+                <thead>
+                  <tr>
+                    <th>Produto</th><th>SKU</th><th>Categoria</th>
+                    <th class="num">Saldo</th><th class="num">Mínimo</th>
+                    <th class="num">Custo</th><th class="num">Preço</th>
+                    <th>Status</th><th class="actions-col">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="productsBody"></tbody>
+              </table>
+            </div>
+            <div class="empty" id="productsEmpty" hidden>
+              <p class="empty-title">Nenhum produto encontrado</p>
+              <p class="empty-text">Cadastre o primeiro produto para começar a controlar o estoque do ateliê.</p>
+              <button class="btn btn-solid" type="button" data-action="new-product">Cadastrar primeiro produto</button>
+            </div>
+          </article>
+        </section>
+
+        <!-- ESTOQUE -->
+        <section class="view" id="view-stock" data-title="Estoque" hidden>
+          <div class="view-head">
+            <div>
+              <h1 class="view-title">Movimentar estoque</h1>
+              <p class="view-sub">Entradas, saídas, perdas e ajustes — tudo registrado com autor e motivo.</p>
+            </div>
+          </div>
+
+          <article class="card">
+            <header class="card-head"><h2>Nova movimentação</h2></header>
+            <form id="stockForm" class="form-grid" novalidate>
+              <label class="field">
+                <span class="field-label">Produto</span>
+                <select class="input select" id="stockProduct" required></select>
+              </label>
+              <label class="field">
+                <span class="field-label">Tipo</span>
+                <select class="input select" id="stockType" required>
+                  <option value="entrada">Entrada (compra/reposição/devolução)</option>
+                  <option value="saida">Saída (venda)</option>
+                  <option value="perda">Perda (danificado/extraviado)</option>
+                  <option value="ajuste">Ajuste (define o saldo)</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field-label" id="stockQtyLabel">Quantidade</span>
+                <input class="input" type="number" id="stockQty" min="0" step="1" inputmode="numeric" required>
+              </label>
+              <label class="field field-wide">
+                <span class="field-label">Motivo / observação <span class="opt" id="stockReasonOpt"></span></span>
+                <input class="input" type="text" id="stockReason" maxlength="240" placeholder="Ex.: compra do fornecedor, venda balcão, avaria no transporte…">
+              </label>
+              <div class="form-foot">
+                <p class="stock-preview" id="stockPreview">Selecione um produto para ver o saldo atual.</p>
+                <button class="btn btn-solid" type="submit">Registrar movimentação</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="card">
+            <header class="card-head"><h2>Saldos atuais</h2><span class="card-sub">clique para movimentar</span></header>
+            <div class="table-wrap">
+              <table class="table">
+                <thead><tr><th>Produto</th><th>SKU</th><th class="num">Saldo</th><th class="num">Mínimo</th><th>Situação</th><th class="actions-col">Ações</th></tr></thead>
+                <tbody id="stockBody"></tbody>
+              </table>
+            </div>
+            <div class="empty" id="stockEmpty" hidden>
+              <p class="empty-title">Nenhum produto para movimentar</p>
+              <p class="empty-text">Cadastre um produto e lance a quantidade inicial para começar.</p>
+              <button class="btn btn-solid" type="button" data-action="new-product">Cadastrar produto</button>
+            </div>
+          </article>
+        </section>
+
+        <!-- MOVIMENTAÇÕES -->
+        <section class="view" id="view-movements" data-title="Movimentações" hidden>
+          <div class="view-head">
+            <div>
+              <h1 class="view-title">Movimentações</h1>
+              <p class="view-sub">Histórico imutável: cada operação registra antes, depois, autor e motivo.</p>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <input class="input" type="date" id="movFrom" aria-label="De">
+            <input class="input" type="date" id="movTo" aria-label="Até">
+            <select class="input select" id="movType" aria-label="Tipo">
+              <option value="">Todos os tipos</option>
+              <option value="entrada">Entrada</option>
+              <option value="saida">Saída</option>
+              <option value="perda">Perda</option>
+              <option value="ajuste">Ajuste</option>
+              <option value="cadastro">Cadastro</option>
+              <option value="inventario">Inventário</option>
+            </select>
+            <input class="input search" type="search" id="movProductSearch" placeholder="Filtrar por produto…">
+            <button class="btn btn-outline" type="button" id="movRefresh">Atualizar</button>
+          </div>
+
+          <article class="card table-card">
+            <div class="table-wrap">
+              <table class="table">
+                <thead><tr><th>Data</th><th>Produto</th><th>Tipo</th><th class="num">Qtd.</th><th class="num">Antes</th><th class="num">Depois</th><th>Responsável</th><th>Motivo</th></tr></thead>
+                <tbody id="movementsBody"></tbody>
+              </table>
+            </div>
+            <div class="empty" id="movementsEmpty" hidden>
+              <p class="empty-title">Nenhuma movimentação no período</p>
+              <p class="empty-text">Registre entradas e saídas na aba Estoque para construir o histórico.</p>
+              <button class="btn btn-solid" type="button" data-goto="stock">Ir para Estoque</button>
+            </div>
+          </article>
+        </section>
+
+        <!-- CATEGORIAS -->
+        <section class="view" id="view-categories" data-title="Categorias" hidden>
+          <div class="view-head">
+            <div>
+              <h1 class="view-title">Categorias</h1>
+              <p class="view-sub">Distribuição do catálogo e do estoque por categoria.</p>
+            </div>
+          </div>
+          <div class="cat-grid" id="categoriesGrid"></div>
+        </section>
+
+        <!-- FORNECEDORES -->
+        <section class="view" id="view-suppliers" data-title="Fornecedores" hidden>
+          <div class="view-head">
+            <div>
+              <h1 class="view-title">Fornecedores</h1>
+              <p class="view-sub">Cadastro de quem fornece as mercadorias do ateliê.</p>
+            </div>
+            <div class="view-actions">
+              <button class="btn btn-solid" type="button" id="newSupplierBtn">+ Novo fornecedor</button>
+            </div>
+          </div>
+          <div class="sup-grid" id="suppliersGrid"></div>
+          <div class="empty card" id="suppliersEmpty" hidden>
+            <p class="empty-title">Nenhum fornecedor cadastrado</p>
+            <p class="empty-text">Cadastre fornecedores para vincular às compras e recebimentos.</p>
+            <button class="btn btn-solid" type="button" id="newSupplierBtn2">Cadastrar fornecedor</button>
+          </div>
+        </section>
+
+        <!-- ALERTAS -->
+        <section class="view" id="view-alerts" data-title="Alertas" hidden>
+          <div class="view-head">
+            <div>
+              <h1 class="view-title">Alertas</h1>
+              <p class="view-sub">Calculados no servidor a cada consulta — nada vem só do navegador.</p>
+            </div>
+          </div>
+          <div class="alerts-list" id="alertsList"></div>
+          <div class="empty card" id="alertsEmpty" hidden>
+            <p class="empty-title">Tudo em ordem por aqui</p>
+            <p class="empty-text">Nenhum alerta no momento: sem produtos no mínimo, esgotados ou com cadastro incompleto.</p>
+          </div>
+        </section>
+
+        <!-- RELATÓRIOS -->
+        <section class="view" id="view-reports" data-title="Relatórios" hidden>
+          <div class="view-head">
+            <div>
+              <h1 class="view-title">Relatórios</h1>
+              <p class="view-sub">Dados reais do banco, com exportação em CSV para planilha.</p>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <select class="input select" id="reportType">
+              <option value="posicao">Posição atual do estoque</option>
+              <option value="movimentacoes">Histórico de movimentações</option>
+              <option value="vendas">Vendas por produto</option>
+              <option value="estoque-baixo">Abaixo do mínimo / sem estoque</option>
+            </select>
+            <input class="input" type="date" id="reportFrom" aria-label="De" hidden>
+            <input class="input" type="date" id="reportTo" aria-label="Até" hidden>
+            <button class="btn btn-outline" type="button" id="reportCsv">Exportar CSV</button>
+            <button class="btn btn-solid" type="button" id="reportRun">Gerar relatório</button>
+          </div>
+
+          <article class="card table-card">
+            <header class="card-head"><h2 id="reportTitle">Posição atual do estoque</h2><span class="card-sub" id="reportMeta"></span></header>
+            <div class="table-wrap">
+              <table class="table" id="reportTable"><thead id="reportHead"></thead><tbody id="reportBody"></tbody></table>
+            </div>
+            <div class="empty" id="reportEmpty" hidden>
+              <p class="empty-title">Sem dados para este relatório</p>
+              <p class="empty-text">Assim que houver produtos e movimentações, os números aparecem aqui.</p>
+            </div>
+          </article>
+        </section>
+
+        <!-- CONFIGURAÇÕES -->
+        <section class="view" id="view-settings" data-title="Configurações" hidden>
+          <div class="view-head">
+            <div>
+              <h1 class="view-title">Configurações</h1>
+              <p class="view-sub">Regras gerais do controle de estoque.</p>
+            </div>
+          </div>
+
+          <article class="card settings-card">
+            <header class="card-head"><h2>Regras do estoque</h2></header>
+            <form id="settingsForm" class="form-grid" novalidate>
+              <label class="field">
+                <span class="field-label">Estoque mínimo padrão (produtos novos)</span>
+                <input class="input" type="number" id="setLowStock" min="0" step="1" inputmode="numeric">
+              </label>
+              <label class="field">
+                <span class="field-label">Expirar pedidos pendentes após (horas)</span>
+                <input class="input" type="number" id="setStaleHours" min="1" step="1" inputmode="numeric">
+                <span class="field-hint">Pedidos não confirmados nesse período devolvem as unidades automaticamente.</span>
+              </label>
+              <div class="form-foot">
+                <span class="stock-preview" id="settingsSaved"></span>
+                <button class="btn btn-solid" type="submit">Salvar configurações</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="card settings-card">
+            <header class="card-head"><h2>Sessão</h2></header>
+            <p class="settings-info">Conectado como <strong id="settingsUser"></strong>. Cada alteração registrada no painel guarda o responsável.</p>
+            <button class="btn btn-outline" type="button" id="settingsLogout">Sair do painel</button>
+          </article>
+        </section>
+
+      </main>
+    </div>
   </div>
 
   <!-- ============================ MODAIS ============================ -->
   <div class="modal-backdrop" id="modalBackdrop" hidden>
-    <!-- Cadastro / edição de produto -->
-    <div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle" hidden>
-      <div class="modal-head">
-        <h2 id="productModalTitle">Novo produto</h2>
-        <button class="modal-close" type="button" data-close aria-label="Fechar">×</button>
-      </div>
-      <form id="productForm" class="modal-body" novalidate>
-        <input type="hidden" id="pfKey">
-        <div class="grid-2">
-          <label class="field"><span class="field-label">Nome *</span><input type="text" id="pfName" required maxlength="60"></label>
-          <label class="field">
-            <span class="field-label">Categoria *</span>
-            <select id="pfCategory"><option value="perfumes">Perfumes</option><option value="joias">Joias</option></select>
-          </label>
-          <label class="field"><span class="field-label">Tipo / formato</span><input type="text" id="pfType" maxlength="40" placeholder="EAU DE PARFUM"></label>
-          <label class="field"><span class="field-label">Preço (R$)</span><input type="text" id="pfPrice" inputmode="decimal" autocomplete="off" maxlength="16" placeholder="129,90"><span class="field-hint">Use vírgula para centavos: 129,90</span></label>
-          <label class="field field-wide"><span class="field-label">Imagem (caminho ou URL)</span><input type="text" id="pfImage" maxlength="240" placeholder="assets/perfume.webp"><span class="field-hint">Caminho do arquivo na loja ou link da foto</span></label>
-          <label class="field"><span class="field-label">Quantidade em estoque</span><input type="text" id="pfStock" inputmode="numeric" autocomplete="off" maxlength="7" value="0"></label>
-          <label class="field"><span class="field-label">Avisar quando chegar em</span><input type="text" id="pfLow" inputmode="numeric" autocomplete="off" maxlength="4" value="3"><span class="field-hint">Abaixo disso aparece "estoque baixo"</span></label>
-          <label class="field field-wide"><span class="field-label">Volumes (label:multiplicador; …)</span><input type="text" id="pfVolumes" placeholder="50 ML:1; 100 ML:1.45"></label>
-          <label class="field field-wide"><span class="field-label">Descrição</span><textarea id="pfDescription" rows="2" maxlength="400"></textarea><span class="field-hint">Texto que aparece na loja ao lado do produto</span></label>
-          <label class="field"><span class="field-label">Notas de saída</span><input type="text" id="pfTopNotes" maxlength="160" placeholder="Bergamota, pimenta…"></label>
-          <label class="field"><span class="field-label">Notas de coração</span><input type="text" id="pfHeartNotes" maxlength="160" placeholder="Rosa, incenso…"></label>
-          <label class="field field-wide"><span class="field-label">Notas de fundo</span><input type="text" id="pfBaseNotes" maxlength="160" placeholder="Sândalo, âmbar, baunilha…"></label>
-          <label class="check"><input type="checkbox" id="pfActive" checked><span>Visível na loja</span></label>
-          <label class="check"><input type="checkbox" id="pfStockControl"><span>Controlar estoque (marca "esgotado" na loja ao chegar a zero)</span></label>
-          <p class="field-hint" id="pfStockHint" hidden>Informar uma quantidade no campo acima também ativa o controle automaticamente.</p>
-        </div>
-        <p class="form-error" id="productFormError" role="alert" hidden></p>
-        <div class="modal-foot">
-          <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
-          <button type="submit" class="btn btn-solid" id="productSaveBtn">Salvar</button>
-        </div>
-      </form>
-    </div>
 
-    <!-- Ajuste rápido de quantidade -->
-    <div class="modal modal-sm" id="stockModal" role="dialog" aria-modal="true" aria-labelledby="stockModalTitle" hidden>
-      <div class="modal-head">
-        <h2 id="stockModalTitle">Ajustar estoque</h2>
-        <button class="modal-close" type="button" data-close aria-label="Fechar">×</button>
-      </div>
-      <form id="stockForm" class="modal-body" novalidate>
-        <p class="modal-product" id="stockProductName"></p>
-        <p class="modal-stock">Saldo atual: <strong id="stockCurrent">0</strong></p>
-        <div class="grid-2">
-          <label class="field">
-            <span class="field-label">Operação</span>
-            <select id="smMode">
-              <option value="set">Definir quantidade exata</option>
-              <option value="add">Adicionar unidades</option>
-              <option value="sub">Remover unidades</option>
+    <!-- Produto -->
+    <div class="modal modal-lg" id="modalProduct" role="dialog" aria-modal="true" aria-labelledby="modalProductTitle" hidden>
+      <header class="modal-head">
+        <h2 id="modalProductTitle">Novo produto</h2>
+        <button class="modal-close" type="button" data-close aria-label="Fechar">✕</button>
+      </header>
+      <form id="productForm" novalidate>
+        <div class="form-grid">
+          <label class="field"><span class="field-label">Nome *</span><input class="input" type="text" id="pName" maxlength="120" required></label>
+          <label class="field"><span class="field-label">SKU (código interno) *</span><input class="input" type="text" id="pSku" maxlength="40" spellcheck="false" required></label>
+          <label class="field"><span class="field-label">Código de barras</span><input class="input" type="text" id="pBarcode" maxlength="64" spellcheck="false"></label>
+          <label class="field"><span class="field-label">Categoria *</span>
+            <select class="input select" id="pCategory" required>
+              <option value="perfumes">Perfumes</option>
+              <option value="joias">Joias</option>
+              <option value="kits">Kits</option>
+              <option value="outros">Outros</option>
             </select>
           </label>
-          <label class="field"><span class="field-label">Quantidade</span><input type="text" id="smQty" inputmode="numeric" autocomplete="off" maxlength="7" value="1" required></label>
-          <label class="field field-wide"><span class="field-label">Observação (opcional)</span><input type="text" id="smNote" maxlength="120" placeholder="ex.: reposição do fornecedor"></label>
+          <label class="field"><span class="field-label">Tipo</span>
+            <select class="input select" id="pType">
+              <option value="perfume">Perfume</option><option value="joia">Joia</option>
+              <option value="kit">Kit</option><option value="outro">Outro</option>
+            </select>
+          </label>
+          <label class="field"><span class="field-label">Marca</span><input class="input" type="text" id="pBrand" maxlength="80"></label>
+          <label class="field"><span class="field-label">Volume / gramatura</span><input class="input" type="text" id="pSize" maxlength="40" placeholder="100ml, 5g…"></label>
+          <label class="field"><span class="field-label">Fornecedor</span><select class="input select" id="pSupplier"><option value="">Sem fornecedor</option></select></label>
+          <label class="field"><span class="field-label">Localização no estoque</span><input class="input" type="text" id="pLocation" maxlength="60" placeholder="Prateleira A-01"></label>
+          <label class="field"><span class="field-label">Foto (URL)</span><input class="input" type="text" id="pImage" maxlength="500" placeholder="assets/…"></label>
+          <label class="field"><span class="field-label">Custo de aquisição (R$) *</span><input class="input" type="number" id="pCost" min="0" step="0.01" inputmode="decimal" required></label>
+          <label class="field"><span class="field-label">Preço de venda (R$) *</span><input class="input" type="number" id="pPrice" min="0" step="0.01" inputmode="decimal" required></label>
+          <label class="field"><span class="field-label" id="pQtyLabel">Quantidade disponível</span><input class="input" type="number" id="pQty" min="0" step="1" inputmode="numeric"></label>
+          <label class="field"><span class="field-label">Estoque mínimo</span><input class="input" type="number" id="pMinStock" min="0" step="1" inputmode="numeric"></label>
+          <label class="field"><span class="field-label">Status</span>
+            <select class="input select" id="pStatus"><option value="ativo">Ativo</option><option value="inativo">Inativo (arquivado)</option></select>
+          </label>
+          <label class="field"><span class="field-label">Vincular à loja (chave do produto público)</span><input class="input" type="text" id="pStoreKey" maxlength="80" spellcheck="false" placeholder="chave usada na vitrine"></label>
+          <label class="field field-wide"><span class="field-label">Descrição</span><textarea class="input" id="pDescription" maxlength="2000" rows="3"></textarea></label>
         </div>
-        <p class="form-error" id="stockFormError" role="alert" hidden></p>
-        <div class="modal-foot">
-          <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
-          <button type="submit" class="btn btn-solid">Confirmar</button>
-        </div>
+        <p class="form-error" id="productFormError" hidden></p>
+        <footer class="modal-foot">
+          <button class="btn btn-ghost" type="button" data-close>Cancelar</button>
+          <button class="btn btn-solid" type="submit" id="productSaveBtn">Salvar produto</button>
+        </footer>
       </form>
     </div>
 
-    <!-- Confirmação (exclusões e ações sensíveis) -->
-    <div class="modal modal-sm" id="confirmModal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" hidden>
-      <div class="modal-head">
-        <h2 id="confirmTitle">Confirmar</h2>
-        <button class="modal-close" type="button" data-close aria-label="Fechar">×</button>
-      </div>
-      <div class="modal-body">
-        <p class="confirm-text" id="confirmText"></p>
-        <p class="form-error" id="confirmError" role="alert" hidden></p>
-        <div class="modal-foot">
-          <button type="button" class="btn btn-ghost" id="confirmCancelBtn">Cancelar</button>
-          <button type="button" class="btn btn-solid" id="confirmOkBtn">Confirmar</button>
+    <!-- Fornecedor -->
+    <div class="modal" id="modalSupplier" role="dialog" aria-modal="true" aria-labelledby="modalSupplierTitle" hidden>
+      <header class="modal-head">
+        <h2 id="modalSupplierTitle">Novo fornecedor</h2>
+        <button class="modal-close" type="button" data-close aria-label="Fechar">✕</button>
+      </header>
+      <form id="supplierForm" novalidate>
+        <div class="form-grid">
+          <label class="field field-wide"><span class="field-label">Nome *</span><input class="input" type="text" id="sName" maxlength="120" required></label>
+          <label class="field"><span class="field-label">Contato</span><input class="input" type="text" id="sContact" maxlength="80"></label>
+          <label class="field"><span class="field-label">Telefone</span><input class="input" type="tel" id="sPhone" maxlength="40"></label>
+          <label class="field field-wide"><span class="field-label">E-mail</span><input class="input" type="email" id="sEmail" maxlength="120"></label>
+          <label class="field field-wide"><span class="field-label">Observações</span><textarea class="input" id="sNotes" maxlength="1000" rows="3"></textarea></label>
+          <label class="field"><span class="field-label">Situação</span><select class="input select" id="sStatus"><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select></label>
         </div>
-      </div>
+        <p class="form-error" id="supplierFormError" hidden></p>
+        <footer class="modal-foot">
+          <button class="btn btn-ghost" type="button" data-close>Cancelar</button>
+          <button class="btn btn-solid" type="submit">Salvar fornecedor</button>
+        </footer>
+      </form>
     </div>
+
+    <!-- Confirmação -->
+    <div class="modal modal-sm" id="modalConfirm" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" hidden>
+      <header class="modal-head">
+        <h2 id="confirmTitle">Confirmar ação</h2>
+        <button class="modal-close" type="button" data-close aria-label="Fechar">✕</button>
+      </header>
+      <p class="confirm-text" id="confirmText"></p>
+      <label class="field" id="confirmReasonField" hidden>
+        <span class="field-label">Motivo (obrigatório)</span>
+        <input class="input" type="text" id="confirmReason" maxlength="240">
+      </label>
+      <footer class="modal-foot">
+        <button class="btn btn-ghost" type="button" data-close>Voltar</button>
+        <button class="btn btn-solid" type="button" id="confirmOk">Confirmar</button>
+      </footer>
+    </div>
+
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
-  <script src="admin.js?v=4"></script>
+  <script src="admin.js?v=novo1"></script>
 </body>
 </html>
