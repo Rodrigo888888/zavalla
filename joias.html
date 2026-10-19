@@ -1,18 +1,19 @@
-��<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZAVALA — Coleção de Joias</title>
+  <title>ZAVALLA — Coleção de Joias</title>
   <meta name="description"
-    content="ZAVALA apresenta sua Coleção de Joias: peças selecionadas com o mesmo rigor e elegância da casa. Novos expositores em preparação.">
+    content="ZAVALLA apresenta sua Coleção de Joias: peças selecionadas com o mesmo rigor e elegância da casa. Novos expositores em preparação.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;1,9..40,400&family=Inter:wght@400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;1,9..40,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="index.css?v=8">
+  <link rel="stylesheet" href="index.css?v=15">
+  <link rel="preload" as="image" href="assets/hero-anel-4k.webp" fetchpriority="high">
   <script>
     (function () {
       try {
@@ -58,6 +59,22 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 40px;
     }
+    @media (max-width: 768px) {
+      .product-grid-section {
+        margin-top: 60px;
+      }
+      #productGridContainer {
+        gap: 12px;
+      }
+      #productGridContainer .product-name-price {
+        font-size: 13px;
+        line-height: 1.25;
+      }
+      #productGridContainer .product-card-action {
+        font-size: 9.5px;
+        letter-spacing: 0.04em;
+      }
+    }
   </style>
 </head>
 
@@ -85,9 +102,9 @@
         <a href="joias.html" class="nav-link">COLEÇÃO DE JOIAS</a>
       </nav>
 
-      <!-- Logotipo Central ZAVALA com Slogan Discreto -->
+      <!-- Logotipo Central ZAVALLA com Slogan Discreto -->
       <div class="nav-brand">
-        <a href="index.html" aria-label="ZAVALA Página Inicial">ZAVALA</a>
+        <a href="index.html" aria-label="ZAVALLA Página Inicial">ZAVALLA</a>
         <span class="nav-brand-slogan">ONDE A ELEGÂNCIA GANHA PERFUME</span>
       </div>
 
@@ -114,7 +131,7 @@
 
         <!-- Ícone do Instagram -->
         <a href="https://www.instagram.com/zavalla_perfume/" target="_blank" rel="noopener noreferrer"
-          class="nav-utility-item" aria-label="Instagram ZAVALA (@zavalla_perfume)" title="Instagram @zavalla_perfume">
+          class="nav-utility-item" aria-label="Instagram ZAVALLA (@zavalla_perfume)" title="Instagram @zavalla_perfume">
           <svg class="icon-stroke" viewBox="0 0 24 24">
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -140,20 +157,21 @@
     <!-- Seção Hero com Imagem Sangrada e Tipografia Chalk Sobreposta -->
     <section class="hero-section" id="hero">
       <!-- Imagem da coleção -->
-      <img src="assets/hero-anel-4k.jpg" alt="Anel em prata com diamante — ZAVALA"
-        class="hero-image" style="object-position: center center;">
+      <img src="assets/hero-anel-4k.webp" alt="Anel em prata com diamante — ZAVALLA"
+        class="hero-image" width="1600" height="1067" decoding="async" fetchpriority="high"
+        style="object-position: center center;">
     </section>
 
 
 
     <!-- Grade de Produtos (9 Arquivos) -->
     <section class="product-grid-section" id="collection">
-      <div class="product-grid" id="productGridContainer">
+      <div class="product-grid" id="productGridContainer" data-category="joias">
 
         <!-- Espaço reservado para joia 1 -->
         <div class="product-card" data-product-key="conjunto-prata-coracao" onclick="openProductModal('conjunto-prata-coracao')">
           <div class="product-media-wrapper">
-            <img src="assets/WhatsApp Image 2026-10-03 at 10.01.01.jpeg" alt="Joia ZAVALA" class="product-image" loading="lazy">
+            <img src="assets/WhatsApp Image 2026-10-03 at 10.01.01.webp" alt="Joia ZAVALLA" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">Conjunto Prata Coração</div>
@@ -165,7 +183,7 @@
         <!-- Espaço reservado para joia 2 -->
         <div class="product-card" data-product-key="colecao-coracao-prata" onclick="openProductModal('colecao-coracao-prata')">
           <div class="product-media-wrapper">
-            <img src="assets/WhatsApp Image 2026-10-03 at 10.01.01 (1).jpeg" alt="Joia ZAVALA" class="product-image" loading="lazy">
+            <img src="assets/WhatsApp Image 2026-10-03 at 10.01.01 (1).webp" alt="Joia ZAVALLA" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">Coleção Coração Prata</div>
@@ -177,7 +195,7 @@
         <!-- Espaço reservado para joia 3 -->
         <div class="product-card" data-product-key="mix-prata-classica" onclick="openProductModal('mix-prata-classica')">
           <div class="product-media-wrapper">
-            <img src="assets/WhatsApp Image 2026-10-03 at 10.01.01 (2).jpeg" alt="Joia ZAVALA" class="product-image" loading="lazy">
+            <img src="assets/WhatsApp Image 2026-10-03 at 10.01.01 (2).webp" alt="Joia ZAVALLA" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">Mix Prata Clássica</div>
@@ -189,7 +207,7 @@
         <!-- Espaço reservado para joia 4 -->
         <div class="product-card" data-product-key="colecao-conchas" onclick="openProductModal('colecao-conchas')">
           <div class="product-media-wrapper">
-            <img src="assets/WhatsApp Image 2026-10-03 at 10.01.01 (3).jpeg" alt="Joia ZAVALA" class="product-image" loading="lazy">
+            <img src="assets/WhatsApp Image 2026-10-03 at 10.01.01 (3).webp" alt="Joia ZAVALLA" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">Coleção Conchas</div>
@@ -201,7 +219,7 @@
         <!-- Espaço reservado para joia 5 -->
         <div class="product-card" data-product-key="kit-prata-brilho" onclick="openProductModal('kit-prata-brilho')">
           <div class="product-media-wrapper">
-            <img src="assets/WhatsApp Image 2026-10-03 at 10.01.01 (4).jpeg" alt="Joia ZAVALA" class="product-image" loading="lazy">
+            <img src="assets/WhatsApp Image 2026-10-03 at 10.01.01 (4).webp" alt="Joia ZAVALLA" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">Kit Prata Brilho</div>
@@ -231,7 +249,7 @@
     </section>
   </main>
 
-  <!-- Rodapé Monástico ZAVALA -->
+  <!-- Rodapé Monástico ZAVALLA -->
   <footer class="site-footer">
     <div class="footer-columns footer-columns--centered">
 
@@ -241,7 +259,7 @@
           <li>SEGUNDA A SEGUNDA</li>
           <li>DAS 09:00 ÀS 19:00</li>
           <li>ITAPOÃ — BRASÍLIA / DF</li>
-          <li>GALERIA ZAVALA</li>
+          <li>GALERIA ZAVALLA</li>
         </ul>
       </div>
 
@@ -277,7 +295,7 @@
     </div>
 
     <div class="footer-bottom">
-      <span>© 2026 ZAVALA — ONDE A ELEGÂNCIA GANHA PERFUME · BRASÍLIA / DF</span>
+      <span>© 2026 ZAVALLA — ONDE A ELEGÂNCIA GANHA PERFUME · BRASÍLIA / DF</span>
     </div>
   </footer>
 
@@ -285,23 +303,46 @@
   <div class="drawer-backdrop" id="cartBackdrop" onclick="closeCart()"></div>
   <aside class="cart-drawer" id="cartDrawer" aria-label="Sacola de Compras">
     <div class="drawer-header">
-      <span class="drawer-title">SACOLA & RESUMO DO ARQUIVO</span>
+      <div class="drawer-heading">
+        <span class="drawer-title">SACOLA & RESUMO DO ARQUIVO</span>
+        <span class="drawer-item-count" id="cartItemCount">0 ITENS</span>
+      </div>
       <button class="drawer-close-btn" onclick="closeCart()" aria-label="Fechar Sacola">FECHAR [×]</button>
     </div>
 
-    <div class="cart-items-container" id="cartItemsContainer">
-      <!-- Injetado dinamicamente via app.js -->
-    </div>
-
-    <div class="drawer-footer">
-      <div class="drawer-subtotal-row">
-        <span>SUBTOTAL</span>
-        <span id="cartSubtotal">R$ 0</span>
+    <div class="drawer-layout">
+      <div class="cart-items-container" id="cartItemsContainer">
+        <!-- Injetado dinamicamente via app.js -->
       </div>
-      <p class="drawer-shipping-note">IMPOSTOS E FRETE CORTESIA INCLUÍDOS NO ARQUIVO.</p>
 
-      <!-- O Único Botão Escuro Preenchido em Grafite do Sistema -->
-      <button class="btn-graphite" id="checkoutBtn" onclick="handleCheckout()">FINALIZAR COMPRA VIA WHATSAPP</button>
+      <div class="drawer-footer" id="cartSummary" hidden>
+        <span class="drawer-footer-title">RESUMO DO PEDIDO</span>
+
+        <div class="cart-summary-rows">
+          <div class="cart-summary-row">
+            <span>SUBTOTAL</span>
+            <span class="summary-value" id="cartSubtotal">R$ 0</span>
+          </div>
+          <div class="cart-summary-row is-discount" id="cartDiscountRow" hidden>
+            <span>DESCONTO</span>
+            <span class="summary-value" id="cartDiscount">—</span>
+          </div>
+          <div class="cart-summary-row is-shipping">
+            <span>FRETE</span>
+            <span class="summary-value" id="cartShipping">CORTESIA</span>
+          </div>
+          <div class="cart-summary-row is-total">
+            <span>TOTAL</span>
+            <span class="summary-value" id="cartTotal">R$ 0</span>
+          </div>
+        </div>
+
+        <p class="drawer-shipping-note">ENTREGA COM CORTESIA PARA O DF. VALORES E PAGAMENTO COMBINADOS DIRETO COM O CONCIERGE.</p>
+
+        <!-- O Único Botão Escuro Preenchido em Grafite do Sistema -->
+        <button class="btn-graphite drawer-checkout-btn" id="checkoutBtn" onclick="handleCheckout()">FINALIZAR COMPRA</button>
+        <p class="drawer-checkout-note">PEDIDO CONFIRMADO PELO WHATSAPP DO ATELIÊ · 61 9235-6967</p>
+      </div>
     </div>
   </aside>
 
@@ -346,14 +387,31 @@
           </div>
         </div>
 
-        <!-- Seletor de Volume -->
-        <div class="modal-volume-selector" id="modalVolumeSelector">
-          <button class="volume-option active" onclick="selectVolume(this, 1)">50 ML</button>
-          <button class="volume-option" onclick="selectVolume(this, 1.45)">100 ML</button>
-        </div>
+        <!-- Caixa de compra — no celular entra na ordem da coluna (ver CSS) -->
+        <div class="modal-buy-box">
+          <div class="buy-box-head">
+            <span class="buy-box-label">Formato</span>
+            <span class="buy-box-price" id="modalPriceSticky">R$ 890</span>
+          </div>
 
-        <button class="btn-graphite modal-add-btn" id="modalAddToCartBtn" onclick="addCurrentModalToCart()">ADICIONAR À
-          SACOLA</button>
+          <!-- Seletor de Volume -->
+          <div class="modal-volume-selector" id="modalVolumeSelector">
+            <button class="volume-option active" onclick="selectVolume(this, 1)">50 ML</button>
+            <button class="volume-option" onclick="selectVolume(this, 1.45)">100 ML</button>
+          </div>
+
+          <!-- Linha divisória sutil entre tamanho e botão (exibida só no celular) -->
+          <div class="modal-buy-divider" aria-hidden="true"></div>
+
+          <button class="btn-graphite modal-add-btn" id="modalAddToCartBtn" onclick="addCurrentModalToCart()">
+            <svg class="buy-box-bag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M6.2 7.5h11.6l.9 12.2a1 1 0 0 1-1 1.1H6.3a1 1 0 0 1-1-1.1L6.2 7.5z"></path>
+              <path d="M9 7.5V6a3 3 0 0 1 6 0v1.5"></path>
+            </svg>
+            <span>ADICIONAR À SACOLA</span>
+          </button>
+        </div>
 
         <!-- Aba para avaliações -->
         <button class="reviews-toggle-btn" id="reviewsToggleBtn" onclick="toggleReviewsPanel()">
@@ -476,7 +534,7 @@
       <div class="account-modal-inner">
         <span class="modal-letter-mark">Z</span>
         <h3 class="modal-product-name" style="font-size:18px; margin-bottom: 4px;">ÁREA DO CLIENTE</h3>
-        <p class="modal-product-type" style="margin-bottom: 20px;">GALERIA ZAVALA — PERFUMARIA</p>
+        <p class="modal-product-type" style="margin-bottom: 20px;">GALERIA ZAVALLA — PERFUMARIA</p>
 
         <!-- Abas -->
         <div class="account-tabs">
@@ -532,7 +590,7 @@
     </div>
   </div>
 
-  <script src="app.js" defer></script>
+  <script src="app.js?v=4" defer></script>
   <script>
     (function () {
       const el = document.querySelector('.hero-title');

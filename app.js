@@ -1,10 +1,10 @@
 /**
- * ZAVALA — Lógica do Aplicativo do Cliente
+ * ZAVALLA — Lógica do Aplicativo do Cliente
  * JavaScript Puro estritamente aderente à voz peso 400 e aos quatro cinzas quentes.
  */
 
 // ==========================================================================
-// Catálogo de Produtos ZAVALA
+// Catálogo de Produtos ZAVALLA
 // ==========================================================================
 // NOTA: basePriceBRL em 0 = preço ainda não confirmado pelo lojista.
 // Descrição e notas também pendentes de confirmação.
@@ -19,7 +19,7 @@ const PRODUCTS = {
       { label: '100 ML', multiplier: 1.45 }
     ],
     selectedVolume: '50 ML',
-    image: 'assets/asad.png',
+    image: 'assets/asad.webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -35,7 +35,7 @@ const PRODUCTS = {
       { label: '100 ML', multiplier: 1.45 }
     ],
     selectedVolume: '50 ML',
-    image: 'assets/yara.png',
+    image: 'assets/yara.webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -51,7 +51,7 @@ const PRODUCTS = {
       { label: '100 ML', multiplier: 1.45 }
     ],
     selectedVolume: '50 ML',
-    image: 'assets/asad-elixir.png',
+    image: 'assets/asad-elixir.webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -67,7 +67,7 @@ const PRODUCTS = {
       { label: '100 ML', multiplier: 1.45 }
     ],
     selectedVolume: '50 ML',
-    image: 'assets/asad-bourbon.png',
+    image: 'assets/asad-bourbon.webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -83,7 +83,7 @@ const PRODUCTS = {
       { label: '100 ML', multiplier: 1.45 }
     ],
     selectedVolume: '50 ML',
-    image: 'assets/1-million.png',
+    image: 'assets/1-million.webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -98,7 +98,7 @@ const PRODUCTS = {
       { label: '50 ML', multiplier: 1 }
     ],
     selectedVolume: '50 ML',
-    image: 'assets/toque-de-amor.png',
+    image: 'assets/toque-de-amor.webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -114,7 +114,7 @@ const PRODUCTS = {
       { label: '100 ML', multiplier: 1.45 }
     ],
     selectedVolume: '50 ML',
-    image: 'assets/liz.png',
+    image: 'assets/liz.webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -129,7 +129,7 @@ const PRODUCTS = {
       { label: '50 ML', multiplier: 1 }
     ],
     selectedVolume: '50 ML',
-    image: 'assets/perfume-a-confirmar.png',
+    image: 'assets/perfume-a-confirmar.webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -144,7 +144,7 @@ const PRODUCTS = {
       { label: '50 ML', multiplier: 1 }
     ],
     selectedVolume: '50 ML',
-    image: 'assets/perfume-b-confirmar.png',
+    image: 'assets/perfume-b-confirmar.webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -160,7 +160,7 @@ const PRODUCTS = {
       { label: '200 ML', multiplier: 1 }
     ],
     selectedVolume: '200 ML',
-    image: 'assets/bodyman-kit.png',
+    image: 'assets/bodyman-kit.webp',
     description: 'Kit com três frascos: ENIGMA (Amadeirado Especializado), MIDTOWN (Amadeirado Floral Almíscarado) e BARBARIUS (Aromático Fougère).',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -175,7 +175,7 @@ const PRODUCTS = {
       { label: 'PEÇA ÚNICA', multiplier: 1 }
     ],
     selectedVolume: 'PEÇA ÚNICA',
-    image: 'assets/WhatsApp Image 2026-10-03 at 10.01.01.jpeg',
+    image: 'assets/WhatsApp Image 2026-10-03 at 10.01.01.webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -190,7 +190,7 @@ const PRODUCTS = {
       { label: 'PEÇA ÚNICA', multiplier: 1 }
     ],
     selectedVolume: 'PEÇA ÚNICA',
-    image: 'assets/WhatsApp Image 2026-10-03 at 10.01.01 (1).jpeg',
+    image: 'assets/WhatsApp Image 2026-10-03 at 10.01.01 (1).webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -205,7 +205,7 @@ const PRODUCTS = {
       { label: 'PEÇA ÚNICA', multiplier: 1 }
     ],
     selectedVolume: 'PEÇA ÚNICA',
-    image: 'assets/WhatsApp Image 2026-10-03 at 10.01.01 (2).jpeg',
+    image: 'assets/WhatsApp Image 2026-10-03 at 10.01.01 (2).webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -220,7 +220,7 @@ const PRODUCTS = {
       { label: 'PEÇA ÚNICA', multiplier: 1 }
     ],
     selectedVolume: 'PEÇA ÚNICA',
-    image: 'assets/WhatsApp Image 2026-10-03 at 10.01.01 (3).jpeg',
+    image: 'assets/WhatsApp Image 2026-10-03 at 10.01.01 (3).webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -235,7 +235,7 @@ const PRODUCTS = {
       { label: 'PEÇA ÚNICA', multiplier: 1 }
     ],
     selectedVolume: 'PEÇA ÚNICA',
-    image: 'assets/WhatsApp Image 2026-10-03 at 10.01.01 (4).jpeg',
+    image: 'assets/WhatsApp Image 2026-10-03 at 10.01.01 (4).webp',
     description: 'CONFIRMAR',
     topNotes: 'CONFIRMAR',
     heartNotes: 'CONFIRMAR',
@@ -363,7 +363,7 @@ function openProductModal(letter) {
   currentModalVolumeLabel = prod.volumeOptions[0].label;
 
   document.getElementById('modalImg').src = prod.image;
-  document.getElementById('modalImg').alt = `ZAVALA — ${prod.name}`;
+  document.getElementById('modalImg').alt = `ZAVALLA — ${prod.name}`;
   const modalLetter = document.getElementById('modalLetter');
   if (modalLetter) modalLetter.style.display = 'none';
   document.getElementById('modalName').textContent = prod.name;
@@ -396,6 +396,9 @@ function openProductModal(letter) {
   backdrop.classList.toggle('is-kit', prod.layout === 'kit');
   backdrop.classList.add('is-open');
 
+  // Disponibilidade real (esgotado / últimas unidades) no botão de compra
+  updateModalStockState(letter);
+
   // Carregar sistema de avaliações para este produto
   loadProductReviews(letter);
 }
@@ -403,7 +406,15 @@ function openProductModal(letter) {
 function updateModalPriceDisplay() {
   if (!currentModalProduct) return;
   const currentTotal = currentModalProduct.basePriceBRL * currentModalMultiplier;
-  document.getElementById('modalPrice').textContent = formatPrice(currentTotal);
+  const priceText = formatPrice(currentTotal);
+
+  // Preço no topo do modal…
+  const mainPrice = document.getElementById('modalPrice');
+  if (mainPrice) mainPrice.textContent = priceText;
+
+  // …e o mesmo valor dentro da barra de compra fixa (celular).
+  const stickyPrice = document.getElementById('modalPriceSticky');
+  if (stickyPrice) stickyPrice.textContent = priceText;
 }
 
 function closeProductModal() {
@@ -416,6 +427,24 @@ function closeProductModal() {
 
 function addCurrentModalToCart() {
   if (!currentModalProduct) return;
+
+  // Estoque real vindo do servidor (painel de Controle de Estoque).
+  const stockInfo = getStockInfo(_currentProductKey);
+  if (stockInfo && stockInfo.soldOut) {
+    openModalMessage('PRODUTO ESGOTADO',
+      `${currentModalProduct.name} está esgotado no momento. Assim que uma unidade voltar, ele volta a ficar disponível aqui na loja.`);
+    return;
+  }
+  if (stockInfo) {
+    const alreadyInCart = cart
+      .filter(item => item.letter === _currentProductKey)
+      .reduce((sum, item) => sum + item.qty, 0);
+    if (alreadyInCart + 1 > stockInfo.stock) {
+      openModalMessage('ESTOQUE INSUFICIENTE',
+        `Restam apenas ${stockInfo.stock} unidade(s) de ${currentModalProduct.name}. Ajuste a quantidade na sua sacola.`);
+      return;
+    }
+  }
 
   const itemPriceBRL = currentModalProduct.basePriceBRL * currentModalMultiplier;
   const itemKey = `${_currentProductKey}-${currentModalVolumeLabel}`;
@@ -477,81 +506,190 @@ function removeItemFromCart(key) {
   saveCart();
 }
 
+// ==========================================================================
+// Totais da Sacola — subtotal, descontos, frete e total
+// ==========================================================================
+function computeCartTotals() {
+  let count = 0;
+  let subtotalBRL = 0;
+  let hasUnconfirmedPrice = false;
+
+  cart.forEach(item => {
+    const unitPrice = Number(item.priceBRL) || 0;
+    count += item.qty;
+    subtotalBRL += unitPrice * item.qty;
+    if (unitPrice <= 0) hasUnconfirmedPrice = true;
+  });
+
+  // Desconto: exibido apenas quando existir campanha ativa (hoje, nenhuma).
+  const discountBRL = 0;
+  // Entrega com cortesia para o DF — frete zero sempre que há itens.
+  const shippingBRL = 0;
+
+  return {
+    count,
+    subtotalBRL,
+    discountBRL,
+    shippingBRL,
+    shippingLabel: cart.length > 0 ? 'CORTESIA' : '—',
+    totalBRL: Math.max(subtotalBRL - discountBRL + shippingBRL, 0),
+    hasUnconfirmedPrice
+  };
+}
+
+// Preço ainda não confirmado pelo lojista aparece como "CONFIRMAR",
+// exatamente como na vitrine — sem inventar valores.
+function formatCartValue(brlAmount, hasUnconfirmedPrice) {
+  if (hasUnconfirmedPrice) return 'CONFIRMAR';
+  return formatPrice(brlAmount);
+}
+
 function updateCartUI() {
   const container = document.getElementById('cartItemsContainer');
   const badge = document.getElementById('cartBadge');
+  const summaryEl = document.getElementById('cartSummary');
+  const itemCountEl = document.getElementById('cartItemCount');
   const subtotalEl = document.getElementById('cartSubtotal');
+  const discountRow = document.getElementById('cartDiscountRow');
+  const discountEl = document.getElementById('cartDiscount');
+  const shippingEl = document.getElementById('cartShipping');
+  const totalEl = document.getElementById('cartTotal');
   if (!container) return;
 
-  let totalCount = 0;
-  let subtotalBRL = 0;
-
-  cart.forEach(item => {
-    totalCount += item.qty;
-    subtotalBRL += item.priceBRL * item.qty;
-  });
+  const totals = computeCartTotals();
 
   if (badge) {
-    badge.textContent = `(${totalCount})`;
+    badge.textContent = `(${totals.count})`;
   }
 
-  if (subtotalEl) {
-    subtotalEl.textContent = formatPrice(subtotalBRL);
+  if (itemCountEl) {
+    itemCountEl.textContent = totals.count === 1 ? '1 ITEM' : `${totals.count} ITENS`;
   }
 
+  // Sacola vazia — mensagem elegante + convite para continuar comprando
   if (cart.length === 0) {
+    if (summaryEl) summaryEl.hidden = true;
     container.innerHTML = `
-      <div class="cart-empty-message">
-        SUA SACOLA ESTÁ VAZIA NO MOMENTO.<br>
-        <span style="font-size: 13px; opacity: 0.6; display: inline-block; margin-top: 8px;">
-          EXPLORE A COLEÇÃO MONÁSTICA PERMANENTE.
-        </span>
+      <div class="cart-empty">
+        <span class="cart-empty-rule" aria-hidden="true"></span>
+        <p class="cart-empty-title">SUA SACOLA ESTÁ VAZIA NO MOMENTO.</p>
+        <p class="cart-empty-sub">EXPLORE A COLEÇÃO MONÁSTICA PERMANENTE.</p>
+        <button type="button" class="btn-outline cart-empty-cta" onclick="closeCart()">CONTINUAR COMPRANDO</button>
       </div>
     `;
     return;
   }
 
-  container.innerHTML = cart.map(item => `
-    <div class="cart-item">
-      <img src="${item.image}" alt="${item.name}" class="cart-item-img">
-      <div class="cart-item-info">
-        <span class="cart-item-name">${item.name}</span>
-        <span class="cart-item-format">${item.volume}</span>
-        <span class="cart-item-price">${formatPrice(item.priceBRL)} cada</span>
-        <div class="cart-qty-controls">
-          <button class="cart-qty-btn" onclick="changeItemQty('${item.key}', -1)" aria-label="Diminuir Quantidade">−</button>
-          <span>${item.qty}</span>
-          <button class="cart-qty-btn" onclick="changeItemQty('${item.key}', 1)" aria-label="Aumentar Quantidade">+</button>
+  if (summaryEl) summaryEl.hidden = false;
+
+  if (subtotalEl) {
+    subtotalEl.textContent = formatCartValue(totals.subtotalBRL, totals.hasUnconfirmedPrice);
+  }
+  if (discountRow) {
+    discountRow.hidden = !(totals.discountBRL > 0);
+  }
+  if (discountEl) {
+    discountEl.textContent = `− ${formatPrice(totals.discountBRL)}`;
+  }
+  if (shippingEl) {
+    shippingEl.textContent = totals.shippingLabel;
+  }
+  if (totalEl) {
+    totalEl.textContent = formatCartValue(totals.totalBRL, totals.hasUnconfirmedPrice);
+  }
+
+  container.innerHTML = cart.map(item => {
+    const unitPrice = Number(item.priceBRL) || 0;
+    const lineTotalBRL = unitPrice * item.qty;
+    const unitLabel = unitPrice > 0 ? `${formatPrice(unitPrice)} · UN.` : 'PREÇO A CONFIRMAR';
+    const lineLabel = unitPrice > 0 ? formatPrice(lineTotalBRL) : 'CONFIRMAR';
+    const product = PRODUCTS[item.letter];
+    const formatLabel = product && product.type
+      ? `${item.volume} · ${product.type}`
+      : item.volume;
+
+    return `
+      <article class="cart-item">
+        <img src="${item.image}" alt="${item.name}" class="cart-item-img" loading="lazy">
+        <div class="cart-item-info">
+          <div class="cart-item-head">
+            <div class="cart-item-titles">
+              <span class="cart-item-name">${item.name}</span>
+              <span class="cart-item-format">${formatLabel}</span>
+            </div>
+            <button type="button" class="cart-item-remove" onclick="removeItemFromCart('${item.key}')" aria-label="Remover ${item.name} da sacola">REMOVER</button>
+          </div>
+          <div class="cart-item-foot">
+            <div class="cart-qty-controls" role="group" aria-label="Quantidade de ${item.name}">
+              <button type="button" class="cart-qty-btn" onclick="changeItemQty('${item.key}', -1)" aria-label="Diminuir quantidade de ${item.name}">−</button>
+              <span class="cart-qty-value" aria-live="polite">${item.qty}</span>
+              <button type="button" class="cart-qty-btn" onclick="changeItemQty('${item.key}', 1)" aria-label="Aumentar quantidade de ${item.name}">+</button>
+            </div>
+            <div class="cart-item-prices">
+              <span class="cart-item-unit">${unitLabel}</span>
+              <span class="cart-item-subtotal">${lineLabel}</span>
+            </div>
+          </div>
         </div>
-      </div>
-      <button class="cart-item-remove" onclick="removeItemFromCart('${item.key}')" aria-label="Remover Item">
-        REMOVER
-      </button>
-    </div>
-  `).join('');
+      </article>
+    `;
+  }).join('');
 }
 
-function handleCheckout() {
+async function handleCheckout() {
   if (cart.length === 0) {
     openModalMessage('SACOLA VAZIA', 'Por favor, selecione uma criação da coleção monástica antes de prosseguir.');
     return;
   }
 
   const phone = '556192356967';
-  const totalBRL = cart.reduce((sum, item) => sum + item.priceBRL * item.qty, 0);
+  const totals = computeCartTotals();
+  const totalLabel = formatCartValue(totals.totalBRL, totals.hasUnconfirmedPrice);
+
+  // Baixa de estoque no servidor — o MESMO banco usado pelo painel administrativo.
+  // A saída de unidades acontece apenas aqui, no momento de confirmar o pedido;
+  // colocar item na sacola nunca mexe no estoque. Se o servidor não responder,
+  // a loja segue o fluxo antigo pelo WhatsApp (compatibilidade total).
+  let orderInfo = null;
+  if (STORE_STOCK.available) {
+    try {
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: cart.map(item => ({ key: item.letter, qty: item.qty, volume: item.volume })),
+          customer: {}
+        })
+      });
+      const data = await response.json().catch(() => null);
+      if (!response.ok) {
+        openModalMessage('PEDIDO NÃO CONCLUÍDO',
+          (data && data.error) || 'Não foi possível registrar o pedido agora. Suas unidades continuam na sacola — tente novamente em instantes.');
+        syncStoreStock();
+        return;
+      }
+      orderInfo = data;
+    } catch (e) {
+      orderInfo = null;
+    }
+  }
+
+  const orderCodeLine = orderInfo && orderInfo.order ? `\n*Código do pedido:* ${orderInfo.order.id}` : '';
 
   // Formata os itens do pedido para o WhatsApp
   const itemsList = cart.map(item => {
-    return `• ${item.qty}x ${item.name} (${item.volume}) — ${formatPrice(item.priceBRL * item.qty)}`;
+    const unitPrice = Number(item.priceBRL) || 0;
+    const lineLabel = unitPrice > 0 ? formatPrice(unitPrice * item.qty) : 'A confirmar';
+    return `• ${item.qty}x ${item.name} (${item.volume}) — ${lineLabel}`;
   }).join('\n');
 
   const message = 
-`Olá, ZAVALA! Gostaria de finalizar meu pedido pelo site:
+`Olá, ZAVALLA! Gostaria de finalizar meu pedido pelo site:
 
 *RESUMO DO PEDIDO:*
-${itemsList}
+${itemsList}${orderCodeLine}
 
-*Valor Total:* ${formatPrice(totalBRL)}
+*Valor Total:* ${totalLabel}
 *Entrega:* Cortesia para o DF
 
 Gostaria de combinar os detalhes de pagamento e envio.`;
@@ -562,10 +700,16 @@ Gostaria de combinar os detalhes de pagamento e envio.`;
   window.open(whatsappUrl, '_blank');
 
   // Notificação no site
-  openModalMessage(
-    'PEDIDO ENVIADO AO WHATSAPP',
-    `Seu pedido no valor de ${formatPrice(totalBRL)} foi formatado com sucesso. Abrimos o WhatsApp do ateliê ZAVALA (61 9235-6967) com a sua solicitação pronta para envio.`
-  );
+  let infoText = totals.hasUnconfirmedPrice
+    ? `Seu pedido foi formatado com sucesso. Abrimos o WhatsApp do ateliê ZAVALLA (61 9235-6967) com a sua solicitação pronta para envio — valores e entrega são confirmados diretamente com o ateliê.`
+    : `Seu pedido no valor de ${formatPrice(totals.totalBRL)} foi formatado com sucesso. Abrimos o WhatsApp do ateliê ZAVALLA (61 9235-6967) com a sua solicitação pronta para envio.`;
+
+  if (orderInfo && orderInfo.order) {
+    infoText += ` Pedido registrado sob o código ${orderInfo.order.id}, com as unidades já reservadas para você. Se mudar de ideia, use o botão abaixo para cancelar e devolver as unidades ao estoque.`;
+  }
+
+  openModalMessage('PEDIDO ENVIADO AO WHATSAPP', infoText,
+    orderInfo ? { label: 'CANCELAR PEDIDO', onClick: () => cancelOrderFromSite(orderInfo) } : null);
 
   cart = [];
   saveCart();
@@ -575,10 +719,29 @@ Gostaria de combinar os detalhes de pagamento e envio.`;
 // ==========================================================================
 // Modal Informativo de Políticas e Concierge
 // ==========================================================================
-function openModalMessage(title, text) {
+function openModalMessage(title, text, action) {
   const backdrop = document.getElementById('infoModalBackdrop');
   document.getElementById('infoModalTitle').textContent = title;
   document.getElementById('infoModalBody').textContent = text;
+
+  // Botão extra opcional (ex.: cancelar o pedido recém-criado no servidor).
+  const modal = backdrop ? backdrop.querySelector('.product-modal') : null;
+  if (modal) {
+    const previousExtra = modal.querySelector('#infoModalExtraAction');
+    if (previousExtra) previousExtra.remove();
+    if (action && typeof action.onClick === 'function') {
+      const extraBtn = document.createElement('button');
+      extraBtn.id = 'infoModalExtraAction';
+      extraBtn.className = 'btn-graphite';
+      extraBtn.style.cssText = 'margin-top: var(--spacing-22); margin-right: 10px; background: transparent; color: currentColor; border: 1px solid currentColor;';
+      extraBtn.textContent = action.label || 'CANCELAR';
+      extraBtn.onclick = () => { closeInfoModal(); action.onClick(); };
+      const mainBtn = modal.querySelector('button.btn-graphite');
+      if (mainBtn) modal.insertBefore(extraBtn, mainBtn);
+      else modal.appendChild(extraBtn);
+    }
+  }
+
   if (backdrop) backdrop.classList.add('is-open');
 }
 
@@ -613,7 +776,7 @@ function handleNewsletter(event) {
 }
 
 // ==========================================================================
-// Sistema de Avaliações ZAVALA
+// Sistema de Avaliações ZAVALLA
 // ==========================================================================
 
 const REVIEWS_DB_KEY = 'zavala_reviews_db_v1';
@@ -687,6 +850,22 @@ function genId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 }
 
+/* ---------- Layout do modal: 2 colunas no desktop, 1 coluna no celular ----------
+   No celular o modal é empilhado: o perfume em cima e a compra embaixo.
+   O grid NUNCA é forçado por JS em tela pequena — era esse estilo inline
+   ('1fr 1fr' / '1fr 1.1fr 1fr') que espremia o modal em colunas achatadas
+   de ~120-180px e vencia o CSS do mobile. */
+function applyModalGrid(reviewsOpen) {
+  const modal = document.querySelector('.product-modal--reviews');
+  if (!modal) return;
+  if (window.matchMedia('(max-width: 768px)').matches) {
+    // Sem estilo inline: deixa o CSS mobile governar (1 coluna)
+    modal.style.gridTemplateColumns = '';
+  } else {
+    modal.style.gridTemplateColumns = reviewsOpen ? '1fr 1.1fr 1fr' : '1fr 1fr';
+  }
+}
+
 /* ---------- Panel Toggle ---------- */
 function toggleReviewsPanel() {
   const panel = document.getElementById('reviewsPanel');
@@ -697,10 +876,7 @@ function toggleReviewsPanel() {
   if (chevron) chevron.classList.toggle('open', _reviewsPanelOpen);
 
   // Expand modal grid
-  const modal = document.querySelector('.product-modal--reviews');
-  if (modal) {
-    modal.style.gridTemplateColumns = _reviewsPanelOpen ? '1fr 1.1fr 1fr' : '1fr 1fr';
-  }
+  applyModalGrid(_reviewsPanelOpen);
 
   if (_reviewsPanelOpen && _currentProductKey) {
     renderReviewsSummary(_currentProductKey);
@@ -720,8 +896,7 @@ function loadProductReviews(productKey) {
   if (panel) panel.classList.remove('open');
   const chevron = document.getElementById('reviewsChevron');
   if (chevron) chevron.classList.remove('open');
-  const modal = document.querySelector('.product-modal--reviews');
-  if (modal) modal.style.gridTemplateColumns = '1fr 1fr';
+  applyModalGrid(false);
 
   // Reset form
   hideReviewForm();
@@ -1314,6 +1489,10 @@ document.addEventListener('keydown', e => {
 document.addEventListener('DOMContentLoaded', () => {
   loadCart();
 
+  // Carrega o estoque real do servidor (painel administrativo ZAVALLA).
+  // Não bloqueia a loja: sem resposta, tudo segue como antes.
+  syncStoreStock();
+
   const cartBtn = document.getElementById('cartOpenBtn');
   if (cartBtn) {
     cartBtn.addEventListener('click', openCart);
@@ -1322,7 +1501,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginBtn = document.getElementById('loginBtn');
   if (loginBtn) {
     loginBtn.addEventListener('click', () => {
-      openModalMessage('CONTA ZAVALA', 'Portal exclusivo para clientes particulares e ordens de arquivo. Insira suas credenciais ou contate seu concierge pessoal.');
+      openModalMessage('CONTA ZAVALLA', 'Portal exclusivo para clientes particulares e ordens de arquivo. Insira suas credenciais ou contate seu concierge pessoal.');
     });
   }
 
@@ -1335,6 +1514,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Inicializar mini-ratings dos cartões de produto
   refreshProductCardMiniRatings();
+
+  // Girar o celular com o modal aberto: reaplica o layout (1 coluna no
+  // retrato, 2 colunas se virar para o modo paisagem/wide)
+  let _gridResizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(_gridResizeTimer);
+    _gridResizeTimer = setTimeout(() => {
+      const backdrop = document.getElementById('productModalBackdrop');
+      if (backdrop && backdrop.classList.contains('is-open')) {
+        applyModalGrid(_reviewsPanelOpen);
+      }
+    }, 150);
+  });
 
   // Inicializar modo escuro (Dark Mode)
   initTheme();
@@ -1401,6 +1593,207 @@ function initTheme() {
     btn.removeEventListener('click', toggleTheme);
     btn.addEventListener('click', toggleTheme);
   });
+}
+
+// ==========================================================================
+// Integração com o servidor de estoque (painel "Controle de Estoque")
+// ==========================================================================
+// Toda a informação de quantidade vem do MESMO banco que o painel administrativo
+// usa (GET /api/catalog). Se o servidor não estiver disponível — por exemplo ao
+// abrir o HTML direto no computador — a loja continua funcionando exatamente
+// como antes, sem nenhum bloqueio.
+const STORE_API_BASE = '/api';
+const STORE_STOCK = { map: {}, available: false, loaded: false };
+
+function getStockInfo(key) {
+  const info = key ? STORE_STOCK.map[key] : null;
+  if (!info) return null;
+  const stock = Number(info.stock) || 0;
+  return { stock, low: !!info.low, soldOut: !!info.soldOut };
+}
+
+async function syncStoreStock() {
+  try {
+    const response = await fetch(`${STORE_API_BASE}/catalog`, { cache: 'no-store', credentials: 'same-origin' });
+    if (!response.ok) throw new Error(`http ${response.status}`);
+    const data = await response.json();
+    if (!data || !Array.isArray(data.products)) throw new Error('resposta inesperada');
+
+    STORE_STOCK.map = {};
+    data.products.forEach(p => {
+      // Produtos sem controle de estoque (lojista ainda não lançou quantidades)
+      // ficam fora do mapa: a vitrine se comporta como sempre se comportou.
+      if (p && p.key && p.controlled) STORE_STOCK.map[p.key] = p;
+    });
+    STORE_STOCK.available = true;
+    STORE_STOCK.loaded = true;
+
+    mergeServerProducts(data.products);
+    applyStockToCards();
+    if (currentModalProduct && _currentProductKey) updateModalStockState(_currentProductKey);
+  } catch (e) {
+    STORE_STOCK.available = false;
+    STORE_STOCK.loaded = true;
+  }
+}
+
+/** Produtos novos cadastrados no painel entram automaticamente na vitrine. */
+function mergeServerProducts(list) {
+  const grid = document.getElementById('productGridContainer');
+
+  list.forEach(p => {
+    if (PRODUCTS[p.key]) {
+      // Só completa o preço base se a loja ainda não tiver um confirmado.
+      if (!PRODUCTS[p.key].basePriceBRL && Number(p.priceBRL) > 0) {
+        PRODUCTS[p.key].basePriceBRL = Number(p.priceBRL);
+        document.querySelectorAll(`.product-card[data-product-key="${p.key}"] .price-val`).forEach(el => {
+          el.setAttribute('data-brl', String(p.priceBRL));
+          el.textContent = formatPrice(Number(p.priceBRL));
+        });
+      }
+      return;
+    }
+
+    const volumes = (Array.isArray(p.volumes) && p.volumes.length) ? p.volumes : [{ label: 'UNIDADE', multiplier: 1 }];
+    PRODUCTS[p.key] = {
+      name: p.name || p.key,
+      category: p.category === 'joias' ? 'joias' : 'perfumes',
+      type: p.type || 'EDIÇÃO ZAVALLA',
+      basePriceBRL: Number(p.priceBRL) || 0,
+      volumeOptions: volumes,
+      selectedVolume: volumes[0].label,
+      image: p.image || 'assets/product-o.svg',
+      description: p.description || 'Descrição a confirmar com o ateliê.',
+      topNotes: p.topNotes || 'A confirmar',
+      heartNotes: p.heartNotes || 'A confirmar',
+      baseNotes: p.baseNotes || 'A confirmar'
+    };
+
+    // Exibe o card na grade somente se a página for da mesma categoria.
+    const isJoiasPage = grid && grid.getAttribute('data-category') === 'joias';
+    const belongsHere = grid && PRODUCTS[p.key].category === (isJoiasPage ? 'joias' : 'perfumes');
+    const alreadyRendered = document.querySelector(`.product-card[data-product-key="${p.key}"]`);
+    if (belongsHere && !alreadyRendered) appendProductCard(p.key, grid);
+  });
+}
+
+function appendProductCard(key, grid) {
+  const prod = PRODUCTS[key];
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  card.setAttribute('data-product-key', key);
+  card.setAttribute('onclick', `openProductModal('${key}')`);
+
+  const priceHtml = prod.basePriceBRL > 0
+    ? ` — <span class="price-val" data-brl="${prod.basePriceBRL}">${formatPrice(prod.basePriceBRL)}</span>`
+    : '';
+
+  card.innerHTML =
+    `<div class="product-media-wrapper">
+       <img src="${prod.image}" alt="${prod.name} — ZAVALLA" class="product-image" loading="lazy" decoding="async">
+     </div>
+     <div class="product-meta">
+       <div class="product-name-price">${prod.name}${priceHtml}</div>
+       <div class="product-format">${prod.type || 'ZAVALLA'}</div>
+       <span class="product-card-action">CONSULTAR ESPECIFICAÇÃO</span>
+     </div>`;
+
+  grid.appendChild(card);
+}
+
+/** Selo discreto de "esgotado" / "últimas unidades" nos cartões da vitrine. */
+function applyStockToCards() {
+  document.querySelectorAll('.product-card[data-product-key]').forEach(card => {
+    const info = getStockInfo(card.getAttribute('data-product-key'));
+    let badge = card.querySelector('.stock-badge');
+
+    if (!info) {
+      if (badge) badge.remove();
+      card.classList.remove('is-sold-out');
+      return;
+    }
+
+    if (info.soldOut || info.low) {
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'stock-badge';
+        card.appendChild(badge);
+      }
+      badge.className = `stock-badge ${info.soldOut ? 'is-out' : 'is-low'}`;
+      badge.textContent = info.soldOut ? 'PRODUTO ESGOTADO' : 'ÚLTIMAS UNIDADES';
+      card.classList.toggle('is-sold-out', info.soldOut);
+    } else if (badge) {
+      badge.remove();
+      card.classList.remove('is-sold-out');
+    }
+  });
+}
+
+/** Estado do botão de compra dentro do modal de produto. */
+function updateModalStockState(letter) {
+  const addBtn = document.getElementById('modalAddToCartBtn');
+  if (!addBtn) return;
+  const label = addBtn.querySelector('span');
+  const info = getStockInfo(letter);
+  const prod = PRODUCTS[letter];
+
+  const buyBox = addBtn.closest('.modal-buy-box');
+  let note = document.getElementById('modalStockNote');
+  if (!note && buyBox) {
+    note = document.createElement('p');
+    note.id = 'modalStockNote';
+    note.style.cssText = 'margin: 10px 0 0; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; text-align: center;';
+    buyBox.insertBefore(note, addBtn);
+  }
+
+  if (!info) {
+    // Sem servidor de estoque: comportamento original da loja.
+    addBtn.disabled = false;
+    if (label) label.textContent = 'ADICIONAR À SACOLA';
+    if (note) note.textContent = '';
+    return;
+  }
+
+  if (info.soldOut) {
+    addBtn.disabled = true;
+    if (label) label.textContent = 'PRODUTO ESGOTADO';
+    if (note) {
+      note.textContent = `${prod ? prod.name : 'Produto'} esgotado — fale com o ateliê pelo WhatsApp para reservar a próxima unidade.`;
+      note.style.color = '#A2454F';
+    }
+  } else {
+    addBtn.disabled = false;
+    if (label) label.textContent = 'ADICIONAR À SACOLA';
+    if (note) {
+      note.textContent = info.low
+        ? `Últimas unidades — restam ${info.stock}`
+        : `Disponível: ${info.stock} unidade(s) em estoque`;
+      note.style.color = info.low ? '#9A6B2F' : '';
+    }
+  }
+}
+
+/** Cancela o pedido no servidor e devolve as unidades ao estoque. */
+async function cancelOrderFromSite(orderInfo) {
+  try {
+    const response = await fetch('/api/order-cancel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId: orderInfo.order.id, cancelToken: orderInfo.cancelToken })
+    });
+    const data = await response.json().catch(() => null);
+    if (!response.ok) {
+      openModalMessage('CANCELAMENTO NÃO CONCLUÍDO',
+        (data && data.error) || 'Não foi possível cancelar por aqui. Fale com o ateliê pelo WhatsApp (61 9235-6967).');
+      return;
+    }
+    syncStoreStock();
+    openModalMessage('PEDIDO CANCELADO',
+      `Pedido ${orderInfo.order.id} cancelado. As unidades voltaram para o estoque da loja e nada foi cobrado.`);
+  } catch (e) {
+    openModalMessage('SEM CONEXÃO',
+      'Não foi possível cancelar agora. Fale com o ateliê pelo WhatsApp (61 9235-6967) para resolver.');
+  }
 }
 
 

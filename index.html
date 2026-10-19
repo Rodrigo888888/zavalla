@@ -1,18 +1,19 @@
-�<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZAVALA — Onde a Elegância Ganha Perfume</title>
+  <title>ZAVALLA — Onde a Elegância Ganha Perfume</title>
   <meta name="description"
-    content="ZAVALA opera como uma galeria monástica de pedra: quatro cinzas quentes, uma única voz em peso 400 e zero adorno. Perfumes em pedestais brancos de giz.">
+    content="ZAVALLA opera como uma galeria monástica de pedra: quatro cinzas quentes, uma única voz em peso 400 e zero adorno. Perfumes em pedestais brancos de giz.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;1,9..40,400&family=Inter:wght@400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;1,9..40,400&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="index.css?v=8">
+  <link rel="stylesheet" href="index.css?v=15">
+  <link rel="preload" as="image" href="assets/hero-yara.webp" fetchpriority="high">
   <script>
     (function () {
       try {
@@ -30,7 +31,7 @@
   <!-- Tela de Carregamento -->
   <div class="page-loader" id="pageLoader" aria-hidden="true">
     <div class="page-loader-inner">
-      <span class="page-loader-name" id="loaderName">ZAVALA</span>
+      <span class="page-loader-name" id="loaderName">ZAVALLA</span>
       <span class="page-loader-tagline">ONDE A ELEGÂNCIA GANHA PERFUME</span>
     </div>
   </div>
@@ -57,9 +58,9 @@
         <a href="joias.html" class="nav-link">COLEÇÃO DE JOIAS</a>
       </nav>
 
-      <!-- Logotipo Central ZAVALA com Slogan Discreto -->
+      <!-- Logotipo Central ZAVALLA com Slogan Discreto -->
       <div class="nav-brand">
-        <a href="index.html" aria-label="ZAVALA Página Inicial">ZAVALA</a>
+        <a href="index.html" aria-label="ZAVALLA Página Inicial">ZAVALLA</a>
         <span class="nav-brand-slogan">ONDE A ELEGÂNCIA GANHA PERFUME</span>
       </div>
 
@@ -86,7 +87,7 @@
 
         <!-- Ícone do Instagram -->
         <a href="https://www.instagram.com/zavalla_perfume/" target="_blank" rel="noopener noreferrer"
-          class="nav-utility-item" aria-label="Instagram ZAVALA (@zavalla_perfume)" title="Instagram @zavalla_perfume">
+          class="nav-utility-item" aria-label="Instagram ZAVALLA (@zavalla_perfume)" title="Instagram @zavalla_perfume">
           <svg class="icon-stroke" viewBox="0 0 24 24">
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -111,10 +112,10 @@
   <main>
     <!-- Seção Hero com Imagem Sangrada e Tipografia Chalk Sobreposta -->
     <section class="hero-section" id="hero">
-      <img src="assets/hero-yara.png" alt="ZAVALA YARA — Lattafa"
-        class="hero-image">
+      <img src="assets/hero-yara.webp" alt="ZAVALLA YARA — Lattafa" class="hero-image"
+        width="1600" height="821" decoding="async" fetchpriority="high">
       <div class="hero-overlay-center">
-        <h1 class="hero-title">ZAVALA</h1>
+        <h1 class="hero-title">ZAVALLA</h1>
       </div>
     </section>
 
@@ -127,7 +128,7 @@
         <!-- Produto 1: ASAD -->
         <div class="product-card" data-product-key="asad" onclick="openProductModal('asad')">
           <div class="product-media-wrapper">
-            <img src="assets/asad.png" alt="ASAD — Lattafa" class="product-image" loading="lazy">
+            <img src="assets/asad.webp" alt="ASAD — Lattafa" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">ASAD — <span class="price-val" data-brl="0">CONFIRMAR</span></div>
@@ -139,7 +140,7 @@
         <!-- Produto 2: YARA -->
         <div class="product-card" data-product-key="yara" onclick="openProductModal('yara')">
           <div class="product-media-wrapper">
-            <img src="assets/yara.png" alt="YARA — Lattafa" class="product-image" loading="lazy">
+            <img src="assets/yara.webp" alt="YARA — Lattafa" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">YARA ROSA — <span class="price-val" data-brl="0">CONFIRMAR</span></div>
@@ -151,7 +152,7 @@
         <!-- Produto 3: ASAD ELIXIR -->
         <div class="product-card" data-product-key="asad-elixir" onclick="openProductModal('asad-elixir')">
           <div class="product-media-wrapper">
-            <img src="assets/asad-elixir.png" alt="ASAD ELIXIR — Lattafa" class="product-image" loading="lazy">
+            <img src="assets/asad-elixir.webp" alt="ASAD ELIXIR — Lattafa" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">ASAD ELIXIR — <span class="price-val" data-brl="0">CONFIRMAR</span></div>
@@ -163,7 +164,7 @@
         <!-- Produto 4: ASAD BOURBON -->
         <div class="product-card" data-product-key="asad-bourbon" onclick="openProductModal('asad-bourbon')">
           <div class="product-media-wrapper">
-            <img src="assets/asad-bourbon.png" alt="ASAD BOURBON — Isabelle La Belle" class="product-image" loading="lazy">
+            <img src="assets/asad-bourbon.webp" alt="ASAD BOURBON — Isabelle La Belle" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">ASAD BOURBON — <span class="price-val" data-brl="0">CONFIRMAR</span></div>
@@ -175,7 +176,7 @@
         <!-- Produto 5: 1 MILLION -->
         <div class="product-card" data-product-key="1-million" onclick="openProductModal('1-million')">
           <div class="product-media-wrapper">
-            <img src="assets/1-million.png" alt="1 MILLION — Paco Rabanne" class="product-image" loading="lazy">
+            <img src="assets/1-million.webp" alt="1 MILLION — Paco Rabanne" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">1 MILLION — <span class="price-val" data-brl="0">CONFIRMAR</span></div>
@@ -187,7 +188,7 @@
         <!-- Produto 6: TOQUE DE AMOR -->
         <div class="product-card" data-product-key="toque-de-amor" onclick="openProductModal('toque-de-amor')">
           <div class="product-media-wrapper">
-            <img src="assets/toque-de-amor.png" alt="TOQUE DE AMOR — Avon" class="product-image" loading="lazy">
+            <img src="assets/toque-de-amor.webp" alt="TOQUE DE AMOR — Avon" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">TOQUE DE AMOR — <span class="price-val" data-brl="0">CONFIRMAR</span></div>
@@ -199,7 +200,7 @@
         <!-- Produto 7: LIZ -->
         <div class="product-card" data-product-key="liz" onclick="openProductModal('liz')">
           <div class="product-media-wrapper">
-            <img src="assets/liz.png" alt="LIZ — oBoticário" class="product-image" loading="lazy">
+            <img src="assets/liz.webp" alt="LIZ — oBoticário" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">LIZ — <span class="price-val" data-brl="0">CONFIRMAR</span></div>
@@ -211,7 +212,7 @@
         <!-- Produto 8: nome pendente, awaited do usuário -->
         <div class="product-card" data-product-key="perfume-a" onclick="openProductModal('perfume-a')">
           <div class="product-media-wrapper">
-            <img src="assets/perfume-a-confirmar.png" alt="Perfume A — nome pendente" class="product-image" loading="lazy">
+            <img src="assets/perfume-a-confirmar.webp" alt="Perfume A — nome pendente" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">PERFUME A — <span class="price-val" data-brl="0">CONFIRMAR</span></div>
@@ -223,7 +224,7 @@
         <!-- Produto 9: nome pendente, awaited do usuário -->
         <div class="product-card" data-product-key="perfume-b" onclick="openProductModal('perfume-b')">
           <div class="product-media-wrapper">
-            <img src="assets/perfume-b-confirmar.png" alt="Perfume B — nome pendente" class="product-image" loading="lazy">
+            <img src="assets/perfume-b-confirmar.webp" alt="Perfume B — nome pendente" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">PERFUME B — <span class="price-val" data-brl="0">CONFIRMAR</span></div>
@@ -235,7 +236,7 @@
         <!-- Produto 10: kit com 3 frascos, foto deitada -->
         <div class="product-card product-card--kit" data-product-key="bodyman-kit" onclick="openProductModal('bodyman-kit')">
           <div class="product-media-wrapper">
-            <img src="assets/bodyman-kit.png" alt="Kit Body Man — Enigma, Midtown e Barbarius" class="product-image" loading="lazy">
+            <img src="assets/bodyman-kit.webp" alt="Kit Body Man — Enigma, Midtown e Barbarius" class="product-image" loading="lazy" decoding="async">
           </div>
           <div class="product-meta">
             <div class="product-name-price">BODY MAN KIT — <span class="price-val" data-brl="0">CONFIRMAR</span></div>
@@ -254,7 +255,7 @@
         <h2 class="joias-title">COLEÇÃO DE JOIAS</h2>
         <p class="joias-subtitle">Brilho discreto, presença absoluta — joias pensadas para acompanhar cada detalhe.</p>
         <div class="joias-gallery" id="joiasGallery">
-          <img src="assets/hero-anel-4k.jpg" alt="Anel em prata com diamante — ZAVALA" loading="lazy" class="joias-single-img">
+          <img src="assets/hero-anel-4k.webp" alt="Anel em prata com diamante — ZAVALLA" loading="lazy" decoding="async" class="joias-single-img">
         </div>
         <a href="joias.html" class="btn-graphite joias-cta">VER COLEÇÃO</a>
       </div>
@@ -263,15 +264,15 @@
     <!-- Manifesto Editorial & Princípios Monásticos -->
     <section class="editorial-section" id="studio">
       <div class="editorial-image-col" style="max-height: none;">
-        <img src="assets/WhatsApp Image 2026-10-01 at 19.25.15.jpeg" alt="Perfumes em pedestais — Bleu de Chanel, Dior Sauvage e Miss Dior"
-          class="editorial-image" loading="lazy" style="height: auto; max-height: none; object-fit: contain; filter: brightness(1.3);">
+        <img src="assets/WhatsApp Image 2026-10-01 at 19.25.15.webp" alt="Perfumes em pedestais — Bleu de Chanel, Dior Sauvage e Miss Dior"
+          class="editorial-image" loading="lazy" decoding="async" style="height: auto; max-height: none; object-fit: contain;">
       </div>
 
       <div class="editorial-content-col">
-        <span class="editorial-kicker">SOBRE A ZAVALA</span>
+        <span class="editorial-kicker">SOBRE A ZAVALLA</span>
         <h2 class="editorial-heading">ELEGÂNCIA QUE MARCA PRESENÇA</h2>
         <p class="editorial-body">
-          A ZAVALA é uma loja de perfumes criada para quem valoriza qualidade, elegância e personalidade. Somos uma
+          A ZAVALLA é uma loja de perfumes criada para quem valoriza qualidade, elegância e personalidade. Somos uma
           referência no mercado de perfumaria, oferecendo produtos selecionados para todos os estilos.
         </p>
         <p class="editorial-body">
@@ -279,11 +280,11 @@
           com fragrâncias marcantes, sofisticadas e perfeitas para diferentes ocasiões.
         </p>
         <p class="editorial-body">
-          A ZAVALA se destaca pelo atendimento, pela qualidade e pelo compromisso com seus clientes. Em nossa loja, você
+          A ZAVALLA se destaca pelo atendimento, pela qualidade e pelo compromisso com seus clientes. Em nossa loja, você
           encontra opções para presentear ou deixar sua própria marca por onde passar.
         </p>
 
-        <!-- Três Princípios ZAVALA -->
+        <!-- Três Princípios ZAVALLA -->
         <div class="editorial-principles">
           <div class="principle-item">
             <h3 class="principle-item-title">01 / QUALIDADE & ELEGÂNCIA</h3>
@@ -319,7 +320,7 @@
     </section>
   </main>
 
-  <!-- Rodapé Monástico ZAVALA -->
+  <!-- Rodapé Monástico ZAVALLA -->
   <footer class="site-footer">
     <div class="footer-columns footer-columns--centered">
 
@@ -329,7 +330,7 @@
           <li>SEGUNDA A SEGUNDA</li>
           <li>DAS 09:00 ÀS 19:00</li>
           <li>ITAPOÃ — BRASÍLIA / DF</li>
-          <li>GALERIA ZAVALA</li>
+          <li>GALERIA ZAVALLA</li>
         </ul>
       </div>
 
@@ -365,7 +366,7 @@
     </div>
 
     <div class="footer-bottom">
-      <span>© 2026 ZAVALA — ONDE A ELEGÂNCIA GANHA PERFUME · BRASÍLIA / DF</span>
+      <span>© 2026 ZAVALLA — ONDE A ELEGÂNCIA GANHA PERFUME · BRASÍLIA / DF</span>
     </div>
   </footer>
 
@@ -373,23 +374,46 @@
   <div class="drawer-backdrop" id="cartBackdrop" onclick="closeCart()"></div>
   <aside class="cart-drawer" id="cartDrawer" aria-label="Sacola de Compras">
     <div class="drawer-header">
-      <span class="drawer-title">SACOLA & RESUMO DO ARQUIVO</span>
+      <div class="drawer-heading">
+        <span class="drawer-title">SACOLA & RESUMO DO ARQUIVO</span>
+        <span class="drawer-item-count" id="cartItemCount">0 ITENS</span>
+      </div>
       <button class="drawer-close-btn" onclick="closeCart()" aria-label="Fechar Sacola">FECHAR [×]</button>
     </div>
 
-    <div class="cart-items-container" id="cartItemsContainer">
-      <!-- Injetado dinamicamente via app.js -->
-    </div>
-
-    <div class="drawer-footer">
-      <div class="drawer-subtotal-row">
-        <span>SUBTOTAL</span>
-        <span id="cartSubtotal">R$ 0</span>
+    <div class="drawer-layout">
+      <div class="cart-items-container" id="cartItemsContainer">
+        <!-- Injetado dinamicamente via app.js -->
       </div>
-      <p class="drawer-shipping-note">IMPOSTOS E FRETE CORTESIA INCLUÍDOS NO ARQUIVO.</p>
 
-      <!-- O Único Botão Escuro Preenchido em Grafite do Sistema -->
-      <button class="btn-graphite" id="checkoutBtn" onclick="handleCheckout()">FINALIZAR COMPRA VIA WHATSAPP</button>
+      <div class="drawer-footer" id="cartSummary" hidden>
+        <span class="drawer-footer-title">RESUMO DO PEDIDO</span>
+
+        <div class="cart-summary-rows">
+          <div class="cart-summary-row">
+            <span>SUBTOTAL</span>
+            <span class="summary-value" id="cartSubtotal">R$ 0</span>
+          </div>
+          <div class="cart-summary-row is-discount" id="cartDiscountRow" hidden>
+            <span>DESCONTO</span>
+            <span class="summary-value" id="cartDiscount">—</span>
+          </div>
+          <div class="cart-summary-row is-shipping">
+            <span>FRETE</span>
+            <span class="summary-value" id="cartShipping">CORTESIA</span>
+          </div>
+          <div class="cart-summary-row is-total">
+            <span>TOTAL</span>
+            <span class="summary-value" id="cartTotal">R$ 0</span>
+          </div>
+        </div>
+
+        <p class="drawer-shipping-note">ENTREGA COM CORTESIA PARA O DF. VALORES E PAGAMENTO COMBINADOS DIRETO COM O CONCIERGE.</p>
+
+        <!-- O Único Botão Escuro Preenchido em Grafite do Sistema -->
+        <button class="btn-graphite drawer-checkout-btn" id="checkoutBtn" onclick="handleCheckout()">FINALIZAR COMPRA</button>
+        <p class="drawer-checkout-note">PEDIDO CONFIRMADO PELO WHATSAPP DO ATELIÊ · 61 9235-6967</p>
+      </div>
     </div>
   </aside>
 
@@ -434,14 +458,31 @@
           </div>
         </div>
 
-        <!-- Seletor de Volume -->
-        <div class="modal-volume-selector" id="modalVolumeSelector">
-          <button class="volume-option active" onclick="selectVolume(this, 1)">50 ML</button>
-          <button class="volume-option" onclick="selectVolume(this, 1.45)">100 ML</button>
-        </div>
+        <!-- Caixa de compra — no celular entra na ordem da coluna (ver CSS) -->
+        <div class="modal-buy-box">
+          <div class="buy-box-head">
+            <span class="buy-box-label">Formato</span>
+            <span class="buy-box-price" id="modalPriceSticky">R$ 890</span>
+          </div>
 
-        <button class="btn-graphite modal-add-btn" id="modalAddToCartBtn" onclick="addCurrentModalToCart()">ADICIONAR À
-          SACOLA</button>
+          <!-- Seletor de Volume -->
+          <div class="modal-volume-selector" id="modalVolumeSelector">
+            <button class="volume-option active" onclick="selectVolume(this, 1)">50 ML</button>
+            <button class="volume-option" onclick="selectVolume(this, 1.45)">100 ML</button>
+          </div>
+
+          <!-- Linha divisória sutil entre tamanho e botão (exibida só no celular) -->
+          <div class="modal-buy-divider" aria-hidden="true"></div>
+
+          <button class="btn-graphite modal-add-btn" id="modalAddToCartBtn" onclick="addCurrentModalToCart()">
+            <svg class="buy-box-bag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M6.2 7.5h11.6l.9 12.2a1 1 0 0 1-1 1.1H6.3a1 1 0 0 1-1-1.1L6.2 7.5z"></path>
+              <path d="M9 7.5V6a3 3 0 0 1 6 0v1.5"></path>
+            </svg>
+            <span>ADICIONAR À SACOLA</span>
+          </button>
+        </div>
 
         <!-- Aba para avaliações -->
         <button class="reviews-toggle-btn" id="reviewsToggleBtn" onclick="toggleReviewsPanel()">
@@ -564,7 +605,7 @@
       <div class="account-modal-inner">
         <span class="modal-letter-mark">Z</span>
         <h3 class="modal-product-name" style="font-size:18px; margin-bottom: 4px;">ÁREA DO CLIENTE</h3>
-        <p class="modal-product-type" style="margin-bottom: 20px;">GALERIA ZAVALA — PERFUMARIA</p>
+        <p class="modal-product-type" style="margin-bottom: 20px;">GALERIA ZAVALLA — PERFUMARIA</p>
 
         <!-- Abas -->
         <div class="account-tabs">
@@ -620,7 +661,7 @@
     </div>
   </div>
 
-  <script src="app.js" defer></script>
+  <script src="app.js?v=4" defer></script>
   <script>
     (function () {
       // Divide o nome do loader em letras animadas
@@ -642,12 +683,12 @@
         if (loader) loader.classList.add('page-loader--hidden');
       }
       if (document.readyState === 'complete') {
-        setTimeout(hideLoader, 900);
+        setTimeout(hideLoader, 350);
       } else {
-        window.addEventListener('load', () => setTimeout(hideLoader, 900));
+        window.addEventListener('load', () => setTimeout(hideLoader, 350));
       }
       // Segurança: nunca travar a tela de carregamento
-      setTimeout(hideLoader, 4000);
+      setTimeout(hideLoader, 2500);
     })();
   </script>
   <script>
@@ -661,6 +702,7 @@
 
       const mobile = window.matchMedia('(max-width: 768px)').matches;
       let ticking = false;
+      let lastProgress = -1;
 
       function clamp01(v) { return Math.min(Math.max(v, 0), 1); }
       function smooth(t) { return t * t * (3 - 2 * t); }
@@ -671,14 +713,30 @@
 
         // Revelar a seção de joias conforme ela entra na tela
         const r = joiasSec.getBoundingClientRect();
+        // Saiu de vista (acima ou abaixo): não há nada a animar.
+        if (r.bottom < 0 || r.top > vh) {
+          if (r.bottom < 0 && lastProgress !== 1) {
+            lastProgress = 1;
+            joiasInner.style.opacity = 1;
+            joiasInner.style.transform = 'translateY(0)';
+          }
+          return;
+        }
         const p = smooth(clamp01(1 - (r.top / vh) * 1.4));
+        if (Math.abs(p - lastProgress) > 0.004) {
+          lastProgress = p;
+          const lift = mobile ? 24 : 60;
+          joiasInner.style.opacity = p;
+          joiasInner.style.transform = 'translateY(' + ((1 - p) * lift) + 'px)';
+        }
 
-        const lift = mobile ? 24 : 60;
-        joiasInner.style.opacity = p;
-        joiasInner.style.transform = 'translateY(' + ((1 - p) * lift) + 'px)';
+        // Em celular o parallax de imagens e o deslize da grade de produtos
+        // são pulados: transformar elementos grandes a cada frame de rolagem
+        // era o que mais travava a lista de produtos.
+        if (mobile) return;
 
         // Parallax sutil nas imagens da galeria de joias
-        const imgShift = mobile ? 8 : 20;
+        const imgShift = 20;
         joiasImgs.forEach((img, i) => {
           const pr = img.parentElement.getBoundingClientRect();
           const prog = clamp01(1 - (pr.top / vh) * 1.2);
@@ -689,7 +747,7 @@
         const pr2 = perfumesSec.getBoundingClientRect();
         const pOut = smooth(clamp01(-pr2.top / (pr2.height * 0.7 || 1)));
         perfumesSec.style.opacity = 1 - pOut * 0.35;
-        perfumesSec.style.transform = 'translateY(' + (-pOut * (mobile ? 12 : 30)) + 'px)';
+        perfumesSec.style.transform = 'translateY(' + (-pOut * 30) + 'px)';
       }
 
       function onScroll() {
@@ -721,12 +779,16 @@
         });
       }
       splitTitle();
-      // Garante animação também ao voltar/ avançar no celular (bfcache)
+      // Ao voltar/avançar no celular (bfcache) garante a animação sem
+      // recarregar a página — um location.reload() aqui fazia o site "travar"
+      // e demorar a reabrir toda vez que o usuário voltava.
       window.addEventListener('pageshow', (e) => {
         if (e.persisted) {
-          document.querySelector('.hero-title').dataset.animated = '';
-          splitTitle();
-          location.reload();
+          const el = document.querySelector('.hero-title');
+          if (el) {
+            el.dataset.animated = '';
+            splitTitle();
+          }
         }
       });
     })();

@@ -109,7 +109,7 @@
     <!-- Minimal White Paper Label with Soot Letter U -->
     <rect x="28" y="90" width="54" height="42" fill="#e5e5e5" stroke="#24241f" stroke-width="0.5" />
     <text x="55" y="118" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="22" fill="#24241f" text-anchor="middle" letter-spacing="1">Z</text>
-    <text x="55" y="126" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="5" fill="#24241f" text-anchor="middle" letter-spacing="0.8">ZAVALA</text>
+    <text x="55" y="126" font-family="'DM Sans', 'Inter', sans-serif" font-weight="400" font-size="5" fill="#24241f" text-anchor="middle" letter-spacing="0.8">ZAVALLA</text>
 
     <!-- Glass Surface Reflections (Highlights) -->
     <rect x="20" y="45" width="70" height="125" fill="url(#glassReflection)" pointer-events="none" />

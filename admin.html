@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>ZAVALLA — Controle de Estoque</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23FBF2F5' stroke='%23B88A72'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='17' fill='%23B88A72'%3EZ%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap">
+  <link rel="stylesheet" href="admin.css?v=7">
+</head>
+<body>
+
+  <!-- ============================ LOGIN ============================ -->
+  <section class="login-screen" id="loginScreen" aria-label="Acesso administrativo">
+    <div class="login-card">
+      <span class="login-brand">ZAVALLA</span>
+      <span class="login-slogan">ONDE A ELEGÂNCIA GANHA PERFUME</span>
+      <h1 class="login-title">Controle de Estoque</h1>
+      <p class="login-sub">Área restrita ao ateliê. Cada alteração fica registrada no histórico.</p>
+
+      <form id="loginForm" autocomplete="on" novalidate>
+        <label class="field">
+          <span class="field-label">Usuário</span>
+          <input type="text" id="loginUser" name="username" autocomplete="username" required spellcheck="false">
+        </label>
+        <label class="field">
+          <span class="field-label">Senha</span>
+          <input type="password" id="loginPassword" name="current-password" autocomplete="current-password" required>
+        </label>
+        <p class="login-error" id="loginError" role="alert" hidden></p>
+        <button type="submit" class="btn btn-solid" id="loginBtn">Entrar</button>
+      </form>
+
+      <a class="login-back" href="index.html">← Voltar para a loja</a>
+    </div>
+  </section>
+
+  <!-- ============================ PAINEL ============================ -->
+  <div class="app layout" id="app" hidden>
+
+    <!-- Menu lateral -->
+    <aside class="side">
+      <div class="side-brand">
+        <span class="brand-name">ZAVALLA</span>
+        <span class="brand-section">Controle de Estoque</span>
+      </div>
+      <nav class="side-nav" aria-label="Seções do painel">
+        <button class="tab is-active" data-tab="products" role="tab" type="button">Produtos</button>
+        <button class="tab" data-tab="orders" role="tab" type="button">Pedidos <span class="tab-badge" id="pendingBadge" hidden>0</span></button>
+        <button class="tab" data-tab="movements" role="tab" type="button">Movimentações</button>
+      </nav>
+      <div class="side-foot">
+        <span class="side-user" id="topbarUser"></span>
+        <button class="side-link" id="refreshBtn" type="button">Atualizar dados</button>
+        <button class="side-link" id="logoutBtn" type="button">Sair do painel</button>
+      </div>
+    </aside>
+
+    <!-- Conteúdo -->
+    <main class="main">
+      <header class="page-head">
+        <h1 class="page-title" id="pageTitle">Produtos</h1>
+        <p class="page-sub" id="pageSub">Preço, foto e quantidade de cada produto — a loja atualiza na hora.</p>
+      </header>
+
+      <!-- Indicadores -->
+      <section class="kpis" id="kpis" aria-label="Indicadores">
+        <article class="kpi">
+          <span class="kpi-value" id="kpiProducts">—</span>
+          <span class="kpi-label">Produtos na loja</span>
+          <span class="kpi-sub">ativos na vitrine</span>
+        </article>
+        <article class="kpi">
+          <span class="kpi-value" id="kpiUnits">—</span>
+          <span class="kpi-label">Unidades em estoque</span>
+          <span class="kpi-sub">somando todos os produtos</span>
+        </article>
+        <article class="kpi kpi-warn">
+          <span class="kpi-value" id="kpiLow">—</span>
+          <span class="kpi-label">Estoque baixo</span>
+          <span class="kpi-sub">já vale repor</span>
+        </article>
+        <article class="kpi kpi-out">
+          <span class="kpi-value" id="kpiOut">—</span>
+          <span class="kpi-label">Esgotados</span>
+          <span class="kpi-sub">sem unidades para vender</span>
+        </article>
+      </section>
+
+      <!-- ---------------- Produtos ---------------- -->
+      <section class="panel is-active" id="panel-products">
+        <div class="toolbar">
+          <input type="search" class="input-search" id="searchInput" placeholder="Buscar produto pelo nome…" aria-label="Buscar produto">
+          <select class="input-select" id="categoryFilter" aria-label="Filtrar por categoria">
+            <option value="all">Todas as categorias</option>
+            <option value="perfumes">Perfumes</option>
+            <option value="joias">Joias</option>
+          </select>
+          <button class="btn btn-outline" id="seedBtn" type="button" title="Importa para o banco os produtos que a loja já vende">Importar produtos da loja</button>
+          <button class="btn btn-solid" id="newProductBtn" type="button">+ Novo produto</button>
+        </div>
+
+        <p class="hint" id="productsHint">Carregando…</p>
+
+        <div class="cards cards-products" id="productsCards"></div>
+        <p class="empty" id="productsEmpty" hidden>Nenhum produto encontrado.</p>
+
+        <div class="table-wrap" id="productsTableWrap" hidden>
+          <table class="data-table" id="productsTable">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Categoria</th>
+                <th class="num">Preço</th>
+                <th class="num">Estoque</th>
+                <th>Ações rápidas</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="productsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ---------------- Pedidos ---------------- -->
+      <section class="panel" id="panel-orders">
+        <p class="hint">Pedidos criados na loja. A baixa de estoque já aconteceu na criação; cancelar devolve as unidades.</p>
+        <div class="table-wrap">
+          <table class="data-table" id="ordersTable">
+            <thead>
+              <tr>
+                <th>Pedido</th>
+                <th>Cliente</th>
+                <th>Itens</th>
+                <th class="num">Total</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="ordersBody"></tbody>
+          </table>
+        </div>
+        <div class="cards" id="ordersCards"></div>
+        <p class="empty" id="ordersEmpty" hidden>Nenhum pedido registrado até o momento.</p>
+      </section>
+
+      <!-- ---------------- Movimentações ---------------- -->
+      <section class="panel" id="panel-movements">
+        <div class="toolbar">
+          <select class="input-select" id="movementTypeFilter" aria-label="Filtrar por tipo">
+            <option value="all">Todos os tipos</option>
+            <option value="entrada">Entradas</option>
+            <option value="saida">Saídas</option>
+            <option value="ajuste">Ajustes</option>
+            <option value="devolucao">Devoluções</option>
+            <option value="cadastro">Cadastros</option>
+            <option value="desativacao">Desativações</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="movementsTable">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Produto</th>
+                <th class="num">Qtd.</th>
+                <th class="num">Saldo</th>
+                <th>Tipo</th>
+                <th>Responsável</th>
+              </tr>
+            </thead>
+            <tbody id="movementsBody"></tbody>
+          </table>
+        </div>
+        <div class="cards" id="movementsCards"></div>
+        <p class="empty" id="movementsEmpty" hidden>Nenhuma movimentação registrada.</p>
+      </section>
+
+      <footer class="foot">ZAVALLA · Painel privado de estoque · Dados gravados no servidor</footer>
+    </main>
+  </div>
+
+  <!-- ============================ MODAIS ============================ -->
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <!-- Cadastro / edição de produto -->
+    <div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle" hidden>
+      <div class="modal-head">
+        <h2 id="productModalTitle">Novo produto</h2>
+        <button class="modal-close" type="button" data-close aria-label="Fechar">×</button>
+      </div>
+      <form id="productForm" class="modal-body" novalidate>
+        <input type="hidden" id="pfKey">
+        <div class="grid-2">
+          <label class="field"><span class="field-label">Nome *</span><input type="text" id="pfName" required maxlength="60"></label>
+          <label class="field">
+            <span class="field-label">Categoria *</span>
+            <select id="pfCategory"><option value="perfumes">Perfumes</option><option value="joias">Joias</option></select>
+          </label>
+          <label class="field"><span class="field-label">Tipo / formato</span><input type="text" id="pfType" maxlength="40" placeholder="EAU DE PARFUM"></label>
+          <label class="field"><span class="field-label">Preço (R$)</span><input type="text" id="pfPrice" inputmode="decimal" autocomplete="off" maxlength="16" placeholder="129,90"><span class="field-hint">Use vírgula para centavos: 129,90</span></label>
+          <label class="field field-wide"><span class="field-label">Imagem (caminho ou URL)</span><input type="text" id="pfImage" maxlength="240" placeholder="assets/perfume.webp"><span class="field-hint">Caminho do arquivo na loja ou link da foto</span></label>
+          <label class="field"><span class="field-label">Quantidade em estoque</span><input type="text" id="pfStock" inputmode="numeric" autocomplete="off" maxlength="7" value="0"></label>
+          <label class="field"><span class="field-label">Avisar quando chegar em</span><input type="text" id="pfLow" inputmode="numeric" autocomplete="off" maxlength="4" value="3"><span class="field-hint">Abaixo disso aparece "estoque baixo"</span></label>
+          <label class="field field-wide"><span class="field-label">Volumes (label:multiplicador; …)</span><input type="text" id="pfVolumes" placeholder="50 ML:1; 100 ML:1.45"></label>
+          <label class="field field-wide"><span class="field-label">Descrição</span><textarea id="pfDescription" rows="2" maxlength="400"></textarea><span class="field-hint">Texto que aparece na loja ao lado do produto</span></label>
+          <label class="field"><span class="field-label">Notas de saída</span><input type="text" id="pfTopNotes" maxlength="160" placeholder="Bergamota, pimenta…"></label>
+          <label class="field"><span class="field-label">Notas de coração</span><input type="text" id="pfHeartNotes" maxlength="160" placeholder="Rosa, incenso…"></label>
+          <label class="field field-wide"><span class="field-label">Notas de fundo</span><input type="text" id="pfBaseNotes" maxlength="160" placeholder="Sândalo, âmbar, baunilha…"></label>
+          <label class="check"><input type="checkbox" id="pfActive" checked><span>Visível na loja</span></label>
+          <label class="check"><input type="checkbox" id="pfStockControl"><span>Controlar estoque (marca "esgotado" na loja ao chegar a zero)</span></label>
+          <p class="field-hint" id="pfStockHint" hidden>Informar uma quantidade no campo acima também ativa o controle automaticamente.</p>
+        </div>
+        <p class="form-error" id="productFormError" role="alert" hidden></p>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+          <button type="submit" class="btn btn-solid" id="productSaveBtn">Salvar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Ajuste rápido de quantidade -->
+    <div class="modal modal-sm" id="stockModal" role="dialog" aria-modal="true" aria-labelledby="stockModalTitle" hidden>
+      <div class="modal-head">
+        <h2 id="stockModalTitle">Ajustar estoque</h2>
+        <button class="modal-close" type="button" data-close aria-label="Fechar">×</button>
+      </div>
+      <form id="stockForm" class="modal-body" novalidate>
+        <p class="modal-product" id="stockProductName"></p>
+        <p class="modal-stock">Saldo atual: <strong id="stockCurrent">0</strong></p>
+        <div class="grid-2">
+          <label class="field">
+            <span class="field-label">Operação</span>
+            <select id="smMode">
+              <option value="set">Definir quantidade exata</option>
+              <option value="add">Adicionar unidades</option>
+              <option value="sub">Remover unidades</option>
+            </select>
+          </label>
+          <label class="field"><span class="field-label">Quantidade</span><input type="text" id="smQty" inputmode="numeric" autocomplete="off" maxlength="7" value="1" required></label>
+          <label class="field field-wide"><span class="field-label">Observação (opcional)</span><input type="text" id="smNote" maxlength="120" placeholder="ex.: reposição do fornecedor"></label>
+        </div>
+        <p class="form-error" id="stockFormError" role="alert" hidden></p>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+          <button type="submit" class="btn btn-solid">Confirmar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Confirmação (exclusões e ações sensíveis) -->
+    <div class="modal modal-sm" id="confirmModal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" hidden>
+      <div class="modal-head">
+        <h2 id="confirmTitle">Confirmar</h2>
+        <button class="modal-close" type="button" data-close aria-label="Fechar">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="confirm-text" id="confirmText"></p>
+        <p class="form-error" id="confirmError" role="alert" hidden></p>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-ghost" id="confirmCancelBtn">Cancelar</button>
+          <button type="button" class="btn btn-solid" id="confirmOkBtn">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="admin.js?v=4"></script>
+</body>
+</html>

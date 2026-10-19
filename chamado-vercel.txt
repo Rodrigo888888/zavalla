@@ -1,0 +1,27 @@
+Subject: Blob store suspended (Billing State: Inactive) — production site down, data inaccessible
+
+Hi Vercel team,
+
+My Vercel Blob store was suspended and my production site can no longer read or write to it.
+
+Details:
+- Team: tege1 (account: thauanalvesgomes-6419) — Hobby plan
+- Project: zavala — production URL: https://zavala-nine.vercel.app
+- Store: zavala-estoque (store_aIFvpRfgYQhX5Sto), region iad1, created 2026-10-17
+- Store page: https://vercel.com/tege1/~/stores/blob/store_aIFvpRfgYQhX5Sto
+- Status: Suspended, "Billing State: Inactive" since 2026-10-18
+
+Errors I am getting:
+- Writes (SDK put): "Vercel Blob: This store has been suspended."
+- Reads (SDK get / blob URL): 403 — "Your store is blocked" / "Failed to fetch blob: 403 Forbidden"
+- CLI: `vercel blob create-store` fails with "Cannot create another store when usage threshold limit is reached (400)"
+
+Usage is far below the Hobby limits (47.91 KB in 214 files, vs the 1 GB included). I already removed 16 old deployments to free deployment storage, but the store is still suspended and creating a replacement store is blocked as well.
+
+This is a live production store processing real customer orders, and the only copy of my data (products, orders, stock movements) is inside this store — currently unreadable.
+
+Could you please:
+1. Reactivate the Blob store — or tell me exactly which usage limit was exceeded and when it lifts; or
+2. Grant brief read-only access so I can export my data.
+
+Thank you very much.
