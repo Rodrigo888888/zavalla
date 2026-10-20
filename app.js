@@ -396,9 +396,6 @@ function openProductModal(letter) {
   backdrop.classList.toggle('is-kit', prod.layout === 'kit');
   backdrop.classList.add('is-open');
 
-  // Disponibilidade real (esgotado / últimas unidades) no botão de compra
-  updateModalStockState(letter);
-
   // Carregar sistema de avaliações para este produto
   loadProductReviews(letter);
 }
@@ -427,24 +424,6 @@ function closeProductModal() {
 
 function addCurrentModalToCart() {
   if (!currentModalProduct) return;
-
-  // Estoque real vindo do servidor (painel de Controle de Estoque).
-  const stockInfo = getStockInfo(_currentProductKey);
-  if (stockInfo && stockInfo.soldOut) {
-    openModalMessage('PRODUTO ESGOTADO',
-      `${currentModalProduct.name} está esgotado no momento. Assim que uma unidade voltar, ele volta a ficar disponível aqui na loja.`);
-    return;
-  }
-  if (stockInfo) {
-    const alreadyInCart = cart
-      .filter(item => item.letter === _currentProductKey)
-      .reduce((sum, item) => sum + item.qty, 0);
-    if (alreadyInCart + 1 > stockInfo.stock) {
-      openModalMessage('ESTOQUE INSUFICIENTE',
-        `Restam apenas ${stockInfo.stock} unidade(s) de ${currentModalProduct.name}. Ajuste a quantidade na sua sacola.`);
-      return;
-    }
-  }
 
   const itemPriceBRL = currentModalProduct.basePriceBRL * currentModalMultiplier;
   const itemKey = `${_currentProductKey}-${currentModalVolumeLabel}`;
@@ -646,36 +625,6 @@ async function handleCheckout() {
   const totals = computeCartTotals();
   const totalLabel = formatCartValue(totals.totalBRL, totals.hasUnconfirmedPrice);
 
-  // Baixa de estoque no servidor — o MESMO banco usado pelo painel administrativo.
-  // A saída de unidades acontece apenas aqui, no momento de confirmar o pedido;
-  // colocar item na sacola nunca mexe no estoque. Se o servidor não responder,
-  // a loja segue o fluxo antigo pelo WhatsApp (compatibilidade total).
-  let orderInfo = null;
-  if (STORE_STOCK.available) {
-    try {
-      const response = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: cart.map(item => ({ key: item.letter, qty: item.qty, volume: item.volume })),
-          customer: {}
-        })
-      });
-      const data = await response.json().catch(() => null);
-      if (!response.ok) {
-        openModalMessage('PEDIDO NÃO CONCLUÍDO',
-          (data && data.error) || 'Não foi possível registrar o pedido agora. Suas unidades continuam na sacola — tente novamente em instantes.');
-        syncStoreStock();
-        return;
-      }
-      orderInfo = data;
-    } catch (e) {
-      orderInfo = null;
-    }
-  }
-
-  const orderCodeLine = orderInfo && orderInfo.order ? `\n*Código do pedido:* ${orderInfo.order.id}` : '';
-
   // Formata os itens do pedido para o WhatsApp
   const itemsList = cart.map(item => {
     const unitPrice = Number(item.priceBRL) || 0;
@@ -687,7 +636,7 @@ async function handleCheckout() {
 `Olá, ZAVALLA! Gostaria de finalizar meu pedido pelo site:
 
 *RESUMO DO PEDIDO:*
-${itemsList}${orderCodeLine}
+${itemsList}
 
 *Valor Total:* ${totalLabel}
 *Entrega:* Cortesia para o DF
@@ -700,16 +649,11 @@ Gostaria de combinar os detalhes de pagamento e envio.`;
   window.open(whatsappUrl, '_blank');
 
   // Notificação no site
-  let infoText = totals.hasUnconfirmedPrice
+  const infoText = totals.hasUnconfirmedPrice
     ? `Seu pedido foi formatado com sucesso. Abrimos o WhatsApp do ateliê ZAVALLA (61 9235-6967) com a sua solicitação pronta para envio — valores e entrega são confirmados diretamente com o ateliê.`
     : `Seu pedido no valor de ${formatPrice(totals.totalBRL)} foi formatado com sucesso. Abrimos o WhatsApp do ateliê ZAVALLA (61 9235-6967) com a sua solicitação pronta para envio.`;
 
-  if (orderInfo && orderInfo.order) {
-    infoText += ` Pedido registrado sob o código ${orderInfo.order.id}, com as unidades já reservadas para você. Se mudar de ideia, use o botão abaixo para cancelar e devolver as unidades ao estoque.`;
-  }
-
-  openModalMessage('PEDIDO ENVIADO AO WHATSAPP', infoText,
-    orderInfo ? { label: 'CANCELAR PEDIDO', onClick: () => cancelOrderFromSite(orderInfo) } : null);
+  openModalMessage('PEDIDO ENVIADO AO WHATSAPP', infoText);
 
   cart = [];
   saveCart();
@@ -1489,10 +1433,6 @@ document.addEventListener('keydown', e => {
 document.addEventListener('DOMContentLoaded', () => {
   loadCart();
 
-  // Carrega o estoque real do servidor (painel administrativo ZAVALLA).
-  // Não bloqueia a loja: sem resposta, tudo segue como antes.
-  syncStoreStock();
-
   const cartBtn = document.getElementById('cartOpenBtn');
   if (cartBtn) {
     cartBtn.addEventListener('click', openCart);
@@ -1594,206 +1534,3 @@ function initTheme() {
     btn.addEventListener('click', toggleTheme);
   });
 }
-
-// ==========================================================================
-// Integração com o servidor de estoque (painel "Controle de Estoque")
-// ==========================================================================
-// Toda a informação de quantidade vem do MESMO banco que o painel administrativo
-// usa (GET /api/catalog). Se o servidor não estiver disponível — por exemplo ao
-// abrir o HTML direto no computador — a loja continua funcionando exatamente
-// como antes, sem nenhum bloqueio.
-const STORE_API_BASE = '/api';
-const STORE_STOCK = { map: {}, available: false, loaded: false };
-
-function getStockInfo(key) {
-  const info = key ? STORE_STOCK.map[key] : null;
-  if (!info) return null;
-  const stock = Number(info.stock) || 0;
-  return { stock, low: !!info.low, soldOut: !!info.soldOut };
-}
-
-async function syncStoreStock() {
-  try {
-    const response = await fetch(`${STORE_API_BASE}/catalog`, { cache: 'no-store', credentials: 'same-origin' });
-    if (!response.ok) throw new Error(`http ${response.status}`);
-    const data = await response.json();
-    if (!data || !Array.isArray(data.products)) throw new Error('resposta inesperada');
-
-    STORE_STOCK.map = {};
-    data.products.forEach(p => {
-      // Produtos sem controle de estoque (lojista ainda não lançou quantidades)
-      // ficam fora do mapa: a vitrine se comporta como sempre se comportou.
-      if (p && p.key && p.controlled) STORE_STOCK.map[p.key] = p;
-    });
-    STORE_STOCK.available = true;
-    STORE_STOCK.loaded = true;
-
-    mergeServerProducts(data.products);
-    applyStockToCards();
-    if (currentModalProduct && _currentProductKey) updateModalStockState(_currentProductKey);
-  } catch (e) {
-    STORE_STOCK.available = false;
-    STORE_STOCK.loaded = true;
-  }
-}
-
-/** Produtos novos cadastrados no painel entram automaticamente na vitrine. */
-function mergeServerProducts(list) {
-  const grid = document.getElementById('productGridContainer');
-
-  list.forEach(p => {
-    if (PRODUCTS[p.key]) {
-      // Só completa o preço base se a loja ainda não tiver um confirmado.
-      if (!PRODUCTS[p.key].basePriceBRL && Number(p.priceBRL) > 0) {
-        PRODUCTS[p.key].basePriceBRL = Number(p.priceBRL);
-        document.querySelectorAll(`.product-card[data-product-key="${p.key}"] .price-val`).forEach(el => {
-          el.setAttribute('data-brl', String(p.priceBRL));
-          el.textContent = formatPrice(Number(p.priceBRL));
-        });
-      }
-      return;
-    }
-
-    const volumes = (Array.isArray(p.volumes) && p.volumes.length) ? p.volumes : [{ label: 'UNIDADE', multiplier: 1 }];
-    PRODUCTS[p.key] = {
-      name: p.name || p.key,
-      category: p.category === 'joias' ? 'joias' : 'perfumes',
-      type: p.type || 'EDIÇÃO ZAVALLA',
-      basePriceBRL: Number(p.priceBRL) || 0,
-      volumeOptions: volumes,
-      selectedVolume: volumes[0].label,
-      image: p.image || 'assets/product-o.svg',
-      description: p.description || 'Descrição a confirmar com o ateliê.',
-      topNotes: p.topNotes || 'A confirmar',
-      heartNotes: p.heartNotes || 'A confirmar',
-      baseNotes: p.baseNotes || 'A confirmar'
-    };
-
-    // Exibe o card na grade somente se a página for da mesma categoria.
-    const isJoiasPage = grid && grid.getAttribute('data-category') === 'joias';
-    const belongsHere = grid && PRODUCTS[p.key].category === (isJoiasPage ? 'joias' : 'perfumes');
-    const alreadyRendered = document.querySelector(`.product-card[data-product-key="${p.key}"]`);
-    if (belongsHere && !alreadyRendered) appendProductCard(p.key, grid);
-  });
-}
-
-function appendProductCard(key, grid) {
-  const prod = PRODUCTS[key];
-  const card = document.createElement('div');
-  card.className = 'product-card';
-  card.setAttribute('data-product-key', key);
-  card.setAttribute('onclick', `openProductModal('${key}')`);
-
-  const priceHtml = prod.basePriceBRL > 0
-    ? ` — <span class="price-val" data-brl="${prod.basePriceBRL}">${formatPrice(prod.basePriceBRL)}</span>`
-    : '';
-
-  card.innerHTML =
-    `<div class="product-media-wrapper">
-       <img src="${prod.image}" alt="${prod.name} — ZAVALLA" class="product-image" loading="lazy" decoding="async">
-     </div>
-     <div class="product-meta">
-       <div class="product-name-price">${prod.name}${priceHtml}</div>
-       <div class="product-format">${prod.type || 'ZAVALLA'}</div>
-       <span class="product-card-action">CONSULTAR ESPECIFICAÇÃO</span>
-     </div>`;
-
-  grid.appendChild(card);
-}
-
-/** Selo discreto de "esgotado" / "últimas unidades" nos cartões da vitrine. */
-function applyStockToCards() {
-  document.querySelectorAll('.product-card[data-product-key]').forEach(card => {
-    const info = getStockInfo(card.getAttribute('data-product-key'));
-    let badge = card.querySelector('.stock-badge');
-
-    if (!info) {
-      if (badge) badge.remove();
-      card.classList.remove('is-sold-out');
-      return;
-    }
-
-    if (info.soldOut || info.low) {
-      if (!badge) {
-        badge = document.createElement('span');
-        badge.className = 'stock-badge';
-        card.appendChild(badge);
-      }
-      badge.className = `stock-badge ${info.soldOut ? 'is-out' : 'is-low'}`;
-      badge.textContent = info.soldOut ? 'PRODUTO ESGOTADO' : 'ÚLTIMAS UNIDADES';
-      card.classList.toggle('is-sold-out', info.soldOut);
-    } else if (badge) {
-      badge.remove();
-      card.classList.remove('is-sold-out');
-    }
-  });
-}
-
-/** Estado do botão de compra dentro do modal de produto. */
-function updateModalStockState(letter) {
-  const addBtn = document.getElementById('modalAddToCartBtn');
-  if (!addBtn) return;
-  const label = addBtn.querySelector('span');
-  const info = getStockInfo(letter);
-  const prod = PRODUCTS[letter];
-
-  const buyBox = addBtn.closest('.modal-buy-box');
-  let note = document.getElementById('modalStockNote');
-  if (!note && buyBox) {
-    note = document.createElement('p');
-    note.id = 'modalStockNote';
-    note.style.cssText = 'margin: 10px 0 0; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; text-align: center;';
-    buyBox.insertBefore(note, addBtn);
-  }
-
-  if (!info) {
-    // Sem servidor de estoque: comportamento original da loja.
-    addBtn.disabled = false;
-    if (label) label.textContent = 'ADICIONAR À SACOLA';
-    if (note) note.textContent = '';
-    return;
-  }
-
-  if (info.soldOut) {
-    addBtn.disabled = true;
-    if (label) label.textContent = 'PRODUTO ESGOTADO';
-    if (note) {
-      note.textContent = `${prod ? prod.name : 'Produto'} esgotado — fale com o ateliê pelo WhatsApp para reservar a próxima unidade.`;
-      note.style.color = '#A2454F';
-    }
-  } else {
-    addBtn.disabled = false;
-    if (label) label.textContent = 'ADICIONAR À SACOLA';
-    if (note) {
-      note.textContent = info.low
-        ? `Últimas unidades — restam ${info.stock}`
-        : `Disponível: ${info.stock} unidade(s) em estoque`;
-      note.style.color = info.low ? '#9A6B2F' : '';
-    }
-  }
-}
-
-/** Cancela o pedido no servidor e devolve as unidades ao estoque. */
-async function cancelOrderFromSite(orderInfo) {
-  try {
-    const response = await fetch('/api/order-cancel', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId: orderInfo.order.id, cancelToken: orderInfo.cancelToken })
-    });
-    const data = await response.json().catch(() => null);
-    if (!response.ok) {
-      openModalMessage('CANCELAMENTO NÃO CONCLUÍDO',
-        (data && data.error) || 'Não foi possível cancelar por aqui. Fale com o ateliê pelo WhatsApp (61 9235-6967).');
-      return;
-    }
-    syncStoreStock();
-    openModalMessage('PEDIDO CANCELADO',
-      `Pedido ${orderInfo.order.id} cancelado. As unidades voltaram para o estoque da loja e nada foi cobrado.`);
-  } catch (e) {
-    openModalMessage('SEM CONEXÃO',
-      'Não foi possível cancelar agora. Fale com o ateliê pelo WhatsApp (61 9235-6967) para resolver.');
-  }
-}
-
-

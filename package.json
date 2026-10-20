@@ -2,8 +2,5 @@
   "name": "zavala",
   "version": "1.0.0",
   "private": true,
-  "description": "ZAVALLA — loja de perfumes e joias",
-  "dependencies": {
-    "@vercel/blob": "^2.8.0"
-  }
+  "description": "ZAVALLA — loja de perfumes e joias"
 }
