@@ -1550,6 +1550,15 @@ document.addEventListener('keydown', e => {
   }
 });
 
+// Atalho de tecla para o controle de estoque: Ctrl + Shift + E.
+// Em qualquer página da loja, abre o painel (controle.html) direto.
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.shiftKey && !e.altKey && !e.metaKey && (e.key === 'E' || e.key === 'e')) {
+    e.preventDefault();
+    window.location.href = 'controle.html';
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   loadCart();
 
