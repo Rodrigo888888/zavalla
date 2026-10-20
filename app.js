@@ -396,6 +396,9 @@ function openProductModal(letter) {
   backdrop.classList.toggle('is-kit', prod.layout === 'kit');
   backdrop.classList.add('is-open');
 
+  // Disponibilidade real (esgotado / últimas unidades) no botão de compra
+  aplicarEstoqueNoModal(letter);
+
   // Carregar sistema de avaliações para este produto
   loadProductReviews(letter);
 }
@@ -424,6 +427,24 @@ function closeProductModal() {
 
 function addCurrentModalToCart() {
   if (!currentModalProduct) return;
+
+  // Bloqueio pelo estoque local (definido no painel controle.html).
+  const info = infoEstoque(_currentProductKey);
+  if (info) {
+    if (info.esgotado) {
+      openModalMessage('PRODUTO ESGOTADO',
+        currentModalProduct.name + ' está esgotado no momento. Fale com o ateliê pelo WhatsApp para reservar a próxima unidade.');
+      return;
+    }
+    const naSacola = cart
+      .filter(item => item.letter === _currentProductKey)
+      .reduce((soma, item) => soma + item.qty, 0);
+    if (naSacola + 1 > info.estoque) {
+      openModalMessage('ESTOQUE INSUFICIENTE',
+        'Restam apenas ' + info.estoque + ' unidade(s) de ' + currentModalProduct.name + '. Ajuste a quantidade na sua sacola.');
+      return;
+    }
+  }
 
   const itemPriceBRL = currentModalProduct.basePriceBRL * currentModalMultiplier;
   const itemKey = `${_currentProductKey}-${currentModalVolumeLabel}`;
@@ -1418,6 +1439,105 @@ function deleteReview(reviewId, productKey) {
 }
 
 // ==========================================================================
+// Estoque da vitrine — números salvos pelo painel (controle.html)
+// ==========================================================================
+// Tudo local: o painel grava no localStorage e a loja lê a mesma chave.
+// Produto sem controle (desmarcado no painel) se comporta como sempre.
+const ESTOQUE_KEY = 'zavala_estoque_v1';
+
+function lerEstoqueLocal() {
+  try {
+    const raw = localStorage.getItem(ESTOQUE_KEY);
+    const dados = raw ? JSON.parse(raw) : null;
+    return dados && typeof dados === 'object' ? dados : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function infoEstoque(chave) {
+  const entrada = lerEstoqueLocal()[chave];
+  if (!entrada || entrada.controlar !== true) return null;
+  const estoque = Math.max(0, Number(entrada.stock) || 0);
+  const minimo = Math.max(0, Number(entrada.min) || 0);
+  return { estoque, minimo, esgotado: estoque <= 0, ultimas: estoque > 0 && estoque <= minimo };
+}
+
+/** Selo de disponibilidade nos cards da grade. */
+function aplicarEstoqueNosCards() {
+  document.querySelectorAll('.product-card[data-product-key]').forEach(card => {
+    const info = infoEstoque(card.dataset.productKey);
+    let selo = card.querySelector('.estoque-selo');
+    if (!info) {
+      if (selo) selo.remove();
+      card.classList.remove('card-esgotado');
+      return;
+    }
+    if (info.esgotado || info.ultimas) {
+      if (!selo) {
+        selo = document.createElement('span');
+        selo.className = 'estoque-selo';
+        card.appendChild(selo);
+      }
+      selo.textContent = info.esgotado ? 'ESGOTADO' : 'ÚLTIMAS UNIDADES';
+      card.classList.toggle('card-esgotado', info.esgotado);
+    } else if (selo) {
+      selo.remove();
+      card.classList.remove('card-esgotado');
+    }
+  });
+}
+
+/** Disponibilidade dentro do modal de produto. */
+function aplicarEstoqueNoModal(chave) {
+  const addBtn = document.getElementById('modalAddToCartBtn');
+  if (!addBtn) return;
+  const rotulo = addBtn.querySelector('span');
+  const info = infoEstoque(chave);
+  const prod = PRODUCTS[chave];
+  const caixa = addBtn.closest('.modal-buy-box');
+  let nota = document.getElementById('modalEstoqueNota');
+  if (!nota && caixa) {
+    nota = document.createElement('p');
+    nota.id = 'modalEstoqueNota';
+    nota.style.cssText = 'margin: 10px 0 0; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; text-align: center;';
+    caixa.insertBefore(nota, addBtn);
+  }
+
+  if (!info) {
+    addBtn.disabled = false;
+    if (rotulo) rotulo.textContent = 'ADICIONAR À SACOLA';
+    if (nota) nota.textContent = '';
+    return;
+  }
+
+  if (info.esgotado) {
+    addBtn.disabled = true;
+    if (rotulo) rotulo.textContent = 'PRODUTO ESGOTADO';
+    if (nota) {
+      nota.textContent = (prod ? prod.name : 'Produto') + ' esgotado — fale com o ateliê pelo WhatsApp.';
+      nota.style.color = '#A2454F';
+    }
+  } else {
+    addBtn.disabled = false;
+    if (rotulo) rotulo.textContent = 'ADICIONAR À SACOLA';
+    if (nota) {
+      nota.textContent = info.ultimas
+        ? 'Últimas unidades — restam ' + info.estoque
+        : 'Disponível: ' + info.estoque + ' unidade(s)';
+      nota.style.color = info.ultimas ? '#9A6B2F' : '';
+    }
+  }
+}
+
+// Atualiza a vitrine em tempo real quando o painel de estoque muda (outra aba).
+window.addEventListener('storage', (e) => {
+  if (e.key !== ESTOQUE_KEY) return;
+  aplicarEstoqueNosCards();
+  if (currentModalProduct && _currentProductKey) aplicarEstoqueNoModal(_currentProductKey);
+});
+
+// ==========================================================================
 // Teclado e Inicialização
 // ==========================================================================
 document.addEventListener('keydown', e => {
@@ -1432,6 +1552,9 @@ document.addEventListener('keydown', e => {
 
 document.addEventListener('DOMContentLoaded', () => {
   loadCart();
+
+  // Aplica o estoque local (painel controle.html) aos cards da vitrine.
+  aplicarEstoqueNosCards();
 
   const cartBtn = document.getElementById('cartOpenBtn');
   if (cartBtn) {

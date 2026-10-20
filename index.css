@@ -3313,3 +3313,39 @@ img, svg {
   }
 }
 
+
+
+/* ==========================================================================
+   Estoque da vitrine — selos definidos pelo painel (controle.html)
+   ========================================================================== */
+.estoque-selo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  padding: 5px 9px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #9A6B2F;
+  border: 1px solid rgba(154, 107, 47, 0.3);
+  border-radius: 2px;
+  font-family: var(--font-gp, inherit);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.card-esgotado .estoque-selo {
+  color: #A2454F;
+  border-color: rgba(162, 69, 79, 0.35);
+}
+
+.card-esgotado .product-image {
+  filter: grayscale(0.85) opacity(0.72);
+}
+
+.modal-add-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
