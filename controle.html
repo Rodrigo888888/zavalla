@@ -145,6 +145,38 @@
   .btn-sair:hover { border-color: var(--dourado); color: var(--tinta); }
 
   .resumo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+
+  /* ---------------- ABAS: perfumes × joias ---------------- */
+  .abas {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--linha);
+  }
+  .aba {
+    padding: 11px 16px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    color: var(--suave);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .aba b {
+    font-weight: 500;
+    font-size: 9.5px;
+    opacity: 0.75;
+    margin-left: 6px;
+    color: var(--dourado);
+  }
+  .aba:hover { color: var(--tinta); }
+  .aba.is-ativa { color: var(--tinta); border-bottom-color: var(--dourado); }
+
   .chip {
     background: var(--papel);
     border: 1px solid var(--linha);
@@ -333,6 +365,11 @@
     <div class="chip danger"><b id="kpiEsgotado">0</b><span>Esgotados</span></div>
   </div>
 
+  <div class="abas" role="tablist">
+    <button class="aba is-ativa" type="button" data-aba="perfumes">Perfumes <b data-contagem="perfumes">0</b></button>
+    <button class="aba" type="button" data-aba="joias">Joias <b data-contagem="joias">0</b></button>
+  </div>
+
   <div class="ferramentas">
     <input class="busca" id="busca" type="search" placeholder="Buscar produto…">
     <button class="btn-limpar" type="button" onclick="limparTudo()">Limpar controle</button>
@@ -361,6 +398,14 @@ const ESTOQUE_KEY = 'zavalla_estoque_v1';
 
 let catalogo = {};   // produtos da vitrine (lidos do app.js)
 let estado = {};     // { chave: { controlar, stock, min } }
+let abaAtual = 'perfumes';  // seção aberta: 'perfumes' | 'joias'
+const categorias = {};      // chave do produto -> 'perfumes' | 'joias'
+
+function categoriaDe(chave, produto) {
+  const cat = (produto && produto.category === 'joias') || categorias[chave] === 'joias' ? 'joias' : 'perfumes';
+  categorias[chave] = cat;
+  return cat;
+}
 
 /* ---------------- sessão ---------------- */
 function sessaoAtiva() { return sessionStorage.getItem(SESSAO_KEY) === '1'; }
@@ -439,9 +484,26 @@ function seloDe(item) {
 
 function renderizar() {
   const lista = document.getElementById('lista');
-  const chaves = Object.keys(catalogo);
-  if (!chaves.length) {
+  const todas = Object.keys(catalogo);
+
+  // preenche/valida o mapa de categorias e conta os produtos de cada aba
+  todas.forEach(chave => categoriaDe(chave, catalogo[chave]));
+  document.querySelectorAll('[data-contagem]').forEach(el => {
+    const cat = el.getAttribute('data-contagem');
+    el.textContent = todas.filter(chave => categorias[chave] === cat).length;
+  });
+
+  // só os produtos da seção aberta
+  const chaves = todas.filter(chave => categorias[chave] === abaAtual);
+
+  if (!todas.length) {
     lista.innerHTML = '<p class="vazio">Nenhum produto encontrado no catálogo da loja.</p>';
+    atualizarKpis();
+    return;
+  }
+  if (!chaves.length) {
+    lista.innerHTML = '<p class="vazio">Nenhum produto de ' + abaAtual + ' no catálogo da loja.</p>';
+    atualizarKpis();
     return;
   }
 
@@ -507,6 +569,7 @@ function atualizarKpis() {
   Object.keys(estado).forEach(chave => {
     const it = estado[chave];
     if (!it.controlar) return;
+    if ((categorias[chave] || 'perfumes') !== abaAtual) return;  // KPIs da seção aberta
     controlados++;
     unidades += it.stock;
     if (it.stock <= 0) fora++;
@@ -518,6 +581,18 @@ function atualizarKpis() {
   document.getElementById('kpiEsgotado').textContent = fora;
 }
 
+/* ---------------- abas: perfumes × joias ---------------- */
+document.querySelectorAll('.aba').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const destino = btn.getAttribute('data-aba');
+    if (destino === abaAtual) return;
+    abaAtual = destino;
+    document.querySelectorAll('.aba').forEach(b => b.classList.toggle('is-ativa', b === btn));
+    document.getElementById('busca').value = '';   // busca vale dentro da seção
+    renderizar();
+  });
+});
+
 /* ---------------- busca e limpeza ---------------- */
 document.getElementById('busca').addEventListener('input', (e) => {
   const termo = e.target.value.trim().toLowerCase();
@@ -527,9 +602,12 @@ document.getElementById('busca').addEventListener('input', (e) => {
 });
 
 function limparTudo() {
-  if (!confirm('Apagar todo o controle de estoque e voltar ao comportamento original da loja?')) return;
-  estado = {};
-  localStorage.removeItem(ESTOQUE_KEY);
+  const nome = abaAtual === 'joias' ? 'das joias' : 'dos perfumes';
+  if (!confirm('Apagar o controle de estoque ' + nome + ' e voltar ao comportamento original da loja para esses produtos?')) return;
+  Object.keys(estado).forEach(chave => {
+    if ((categorias[chave] || 'perfumes') === abaAtual) delete estado[chave];
+  });
+  localStorage.setItem(ESTOQUE_KEY, JSON.stringify(estado));
   renderizar();
 }
 
