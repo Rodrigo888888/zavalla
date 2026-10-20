@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -603,6 +603,21 @@
         s.style.animationDelay = (i * 0.07) + 's';
         s.textContent = ch === ' ' ? '\u00A0' : ch;
         el.appendChild(s);
+      });
+    })();
+  </script>
+
+  <!-- Atalho do controle de estoque: funciona mesmo com app.js no cache -->
+  <script>
+    (function () {
+      if (window.__zavalaAtalhoControle) return;
+      window.__zavalaAtalhoControle = true;
+      document.addEventListener('keydown', function (ev) {
+        if (ev.code !== 'KeyX' || !ev.ctrlKey) return;
+        if (ev.altKey || ev.shiftKey) {
+          ev.preventDefault();
+          window.location.href = 'controle.html';
+        }
       });
     })();
   </script>

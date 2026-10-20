@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZAVALLA — Menu</title>
+  <title>ZAVALLA â€” Menu</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -84,9 +84,9 @@
 
 <body>
   <h1>ZAVALLA</h1>
-  <p>ONDE A ELEGÂNCIA GANHA PERFUME</p>
+  <p>ONDE A ELEGÃ‚NCIA GANHA PERFUME</p>
   <a class="btn" href="index.html">Perfumes</a>
-  <a class="btn" href="joias.html">Coleção de Joias</a>
+  <a class="btn" href="joias.html">ColeÃ§Ã£o de Joias</a>
   <button class="theme-btn" id="mobileThemeBtn" onclick="toggleMobileTheme()">Alternar Modo Escuro</button>
 
   <script>
@@ -107,6 +107,21 @@
       updateMobileThemeBtn();
     }
     updateMobileThemeBtn();
+  </script>
+
+  <!-- Atalho do controle de estoque: funciona mesmo com app.js no cache -->
+  <script>
+    (function () {
+      if (window.__zavalaAtalhoControle) return;
+      window.__zavalaAtalhoControle = true;
+      document.addEventListener('keydown', function (ev) {
+        if (ev.code !== 'KeyX' || !ev.ctrlKey) return;
+        if (ev.altKey || ev.shiftKey) {
+          ev.preventDefault();
+          window.location.href = 'controle.html';
+        }
+      });
+    })();
   </script>
 </body>
 

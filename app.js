@@ -1550,15 +1550,18 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// Atalho de tecla para o controle de estoque: Ctrl + Alt + X.
-// Em qualquer página da loja, abre o painel (controle.html) direto.
-// e.code = tecla física, funciona mesmo com layouts onde AltGr muda o e.key.
-document.addEventListener('keydown', e => {
-  if (e.ctrlKey && e.altKey && e.code === 'KeyX') {
-    e.preventDefault();
-    window.location.href = 'controle.html';
-  }
-});
+// Atalho de tecla para o controle de estoque: Ctrl + Alt + X (ou Ctrl + Shift + X).
+// Também é registrado direto no HTML — quem chegar primeiro ativa, sem duplicar,
+// garantindo que funcione mesmo com app.js no cache.
+if (!window.__zavalaAtalhoControle) {
+  window.__zavalaAtalhoControle = true;
+  document.addEventListener('keydown', e => {
+    if (e.code === 'KeyX' && e.ctrlKey && (e.altKey || e.shiftKey)) {
+      e.preventDefault();
+      window.location.href = 'controle.html';
+    }
+  });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   loadCart();
